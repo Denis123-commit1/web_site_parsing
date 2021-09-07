@@ -28,7 +28,7 @@ def get_content(html):
         # assert isinstance(item.find('section', class_='proposition_line').get, str)
         cars.append({
             'title': item.find('div', class_='proposition_title').get_text(strip=True),
-            'link': item.find('span', class_='link').get_text(),
+            'link': item.find(class_ = 'link').get('href'),
             # 'usd_price': item.find('strong', class_='green').get_text(),
             # 'uah_price': uah_price,
             # 'city': item.find('svg', class_='svg_i16_pin').find_next('span').get_text(),
@@ -51,3 +51,21 @@ def parse():
 
 
 parse()
+
+
+
+
+
+
+# import requests
+# from bs4 import BeautifulSoup as BS
+#
+# r = requests.get('https://auto.ria.com/newauto/marka-jeep/')
+# html = BS(r.content, 'html.parser')
+#
+#
+#
+#
+# for el in html.select('.anons-readmore'):
+#                 url_more = el.select_one('a').get('href')
+#                 print(url_more)
