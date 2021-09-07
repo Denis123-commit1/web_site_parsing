@@ -25,17 +25,19 @@ def get_content(html):
         #     uah_price = uah_price.get_text().replace(' • ', '')
         # else:
         #     uah_price = 'Цену уточняйте'
-        # assert isinstance(item.find('section', class_='proposition_line').get, str)
+
         cars.append({
             'title': item.find('div', class_='proposition_title').get_text(strip=True),
-            'link': item.find(class_ = 'link').get('href'),
-            # 'usd_price': item.find('strong', class_='green').get_text(),
-            # 'uah_price': uah_price,
-            # 'city': item.find('svg', class_='svg_i16_pin').find_next('span').get_text(),
+            'link': item.find('span', class_ = 'link').get('href'),
+            'usd_price': item.find('span', class_='green').get_text(),
+            'uah_price': item.find('span', class_='size16').get_text(),
+            'city': item.find('span', class_='item region').get_text(),
         })
     print(cars) # Проверка количества названий автомобилей
     # print(len(cars))
     # return cars
+
+
 
 def parse():
     html = get_html(URL)
