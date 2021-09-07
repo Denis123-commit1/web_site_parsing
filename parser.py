@@ -3,8 +3,9 @@ from bs4 import BeautifulSoup
 
 # Переменные как константы пишем в верхнем регистре
 URL = 'https://auto.ria.com/newauto/marka-jeep/'
-HEADERS = {'user-agent': 'OPR/78.0.4093.184', 'accept': '*/*'}
+HEADERS = {'user-agent': 'Chrome/93.0.4577.63', 'accept': '*/*'}
 HOST = 'https://auto.ria.com'
+FILE = 'cars.csv'
 
 
 def get_html(url, params=None):
@@ -12,11 +13,17 @@ def get_html(url, params=None):
     return r
 
 
+
+
+
+
+
 def get_content(html):
     soup = BeautifulSoup(html, 'html.parser')
-    items = soup.find_all('div', class_='result-explore')
+    items = soup.find_all('a', class_ = 'proposition_link') # Если здесь указать то, что выше "a.proposition",
+    # то нет никаких проблем с выводом ссылки
 
-    # print(items)
+
 
     cars = []
     for item in items:
@@ -24,7 +31,7 @@ def get_content(html):
 
         cars.append({
             'title': item.find('div', class_='proposition_title').get_text(strip=True),
-            'link': item.find('a',class_ = 'proposition_link').get('href'),
+            # 'link': HOST + item.find('a',class_ = 'proposition_link').get('href'),
             'usd_price': item.find('span', class_='green').get_text(),
             'uah_price': item.find('span', class_='size16').get_text(),
             'city': item.find('span', class_='item region').get_text(),
@@ -34,9 +41,6 @@ def get_content(html):
 
 
 
-def parse():
-    html = get_html(URL)
-    print(html.status_code)
 
 def parse():
     html = get_html(URL)
