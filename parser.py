@@ -28,7 +28,7 @@ def get_content(html):
 
         cars.append({
             'title': item.find('div', class_='proposition_title').get_text(strip=True),
-            'link': item.find('span', class_ = 'link').get('href'),
+            # 'link': item.find('a',class_ = 'proposition_link').get('href'),
             'usd_price': item.find('span', class_='green').get_text(),
             'uah_price': item.find('span', class_='size16').get_text(),
             'city': item.find('span', class_='item region').get_text(),
@@ -47,7 +47,8 @@ def parse():
     html = get_html(URL)
     if html.status_code == 200:
         # print(html.text) # Выйдет html запрос, который надо будет распарсить
-        cars = get_content(html.text)
+        get_content(html.text)
+        # cars = get_content(html.text)
     else:
         print('Error')
 
