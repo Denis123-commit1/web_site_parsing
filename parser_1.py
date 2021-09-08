@@ -21,12 +21,11 @@ def get_pages_count(html):
 
     pagination = soup.find_all('span', class_='page-item mhide', \
                                limit=2)
-    print(pagination)
-    # if pagination:
-    #     return int(pagination[-1].get_text())
-    # else:
-    #     return 1
 
+    if pagination:
+        return int(pagination[-1].get_text())
+    else:
+        return 1
 
 
 
@@ -40,7 +39,7 @@ def get_content(html):
 
     cars = []
     for item in items:
-        usd_price = item.find('div', class_='price-ticket')
+        usd_price = item.find('span', class_='size22')
         if usd_price:
             usd_price = usd_price.get_text().replace('\xa0', '')
             usd_price = usd_price.replace('•', ', ')
@@ -57,28 +56,29 @@ def get_content(html):
         })
     return cars
 
-# def save_file(items, path):
-#     with open(path, 'w', newline='') as file:
-#         writer = csv.writer(file, delimiter=';')
-#         writer.writerow(['Марка', 'Ссылка', 'Цена в $'])
-#         for item in items:
-#             writer.writerow([item['title'], item['link'], item['usd_price']])
+def save_file(items, path):
+    with open(path, 'w', newline='') as file:
+        writer = csv.writer(file, delimiter=';')
+        writer.writerow(['Марка', 'Ссылка', 'Цена в $'])
+        for item in items:
+            writer.writerow([item['title'], item['link'], item['usd_price']])
 
 
 def parse():
-    # URL = input('Введите URL: ')
-    # URL = URL.strip()
+    URL = input('Введите URL: ')
+    URL = URL.strip()
     html = get_html(URL)
     if html.status_code == 200:
-        # cars = []
+        cars = []
         pages_count = get_pages_count(html.text)
-        # for page in range(1, pages_count + 1):
-        #     print(f'Парсинг страницы {page} из {pages_count}...')
-        #     html = get_html(URL, params={'page': page})
-        #     cars.extend(get_content(html.text))
-        # save_file(cars, FILE)
-        # print(f'Получено {len(cars)} автомобилей')
-        # os.startfile(FILE)
+        for page in range(1, pages_count + 1):
+            print(f'Парсинг страницы {page} из {pages_count}...')
+            html = get_html(URL, params={'page': page})
+
+            cars.extend(get_content(html.text))
+        save_file(cars, FILE)
+        print(f'Получено {len(cars)} автомобилей')
+        os.startfile(FILE)
     else:
         print('Error')
 
