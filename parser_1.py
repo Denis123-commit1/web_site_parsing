@@ -1,10 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
+import csv
+import os
 
 # Переменные как константы пишем в верхнем регистре
 URL = 'https://auto.ria.com/car/used/'
 HEADERS = {'user-agent': 'Chrome/93.0.4577.63', 'accept': '*/*'}
 HOST = 'https://auto.ria.com'
+FILE = 'cars.csv'
 
 
 def get_html(url, params=None):
@@ -12,6 +15,17 @@ def get_html(url, params=None):
     return r
 
 
+def get_pages_count(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    # pagination = soup.find_all('span', class_='page-item mhide')
+    num_of_page = 10
+    for i in range(num_of_page):
+        pagination = soup.find_all('span', class_='page-item mhide', limit = 10)
+        print(pagination)
+    # if pagination:
+    #     return int(pagination[-1].get_text())
+    # else:
+    #     return 1
 
 
 
@@ -33,7 +47,6 @@ def get_content(html):
         else:
             usd_price = 'Цену уточняйте'
 
-
         cars.append({
             'title': item.find('span', class_='blue bold').get_text(strip=True),
             'link': item.find('a',class_ = 'm-link-ticket').get('href'),
@@ -42,17 +55,30 @@ def get_content(html):
             'usd_price': usd_price
             # 'city': item.find('span', class_='item region').get_text(),
         })
-    print(cars)
     return cars
 
-
+# def save_file(items, path):
+#     with open(path, 'w', newline='') as file:
+#         writer = csv.writer(file, delimiter=';')
+#         writer.writerow(['Марка', 'Ссылка', 'Цена в $'])
+#         for item in items:
+#             writer.writerow([item['title'], item['link'], item['usd_price']])
 
 
 def parse():
+    # URL = input('Введите URL: ')
+    # URL = URL.strip()
     html = get_html(URL)
     if html.status_code == 200:
-        # print(html.text) # Выйдет html запрос, который надо будет распарсить
-        cars = get_content(html.text)
+        # cars = []
+        pages_count = get_pages_count(html.text)
+        # for page in range(1, pages_count + 1):
+        #     print(f'Парсинг страницы {page} из {pages_count}...')
+        #     html = get_html(URL, params={'page': page})
+        #     cars.extend(get_content(html.text))
+        # save_file(cars, FILE)
+        # print(f'Получено {len(cars)} автомобилей')
+        # os.startfile(FILE)
     else:
         print('Error')
 
