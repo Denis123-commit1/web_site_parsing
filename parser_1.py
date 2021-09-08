@@ -18,10 +18,10 @@ def get_html(url, params=None):
 def get_pages_count(html):
     soup = BeautifulSoup(html, 'html.parser')
     # pagination = soup.find_all('span', class_='page-item mhide')
-    num_of_page = 10
-    for i in range(num_of_page):
-        pagination = soup.find_all('span', class_='page-item mhide', limit = 10)
-        print(pagination)
+
+    pagination = soup.find_all('span', class_='page-item mhide', \
+                               limit=2)
+    print(pagination)
     # if pagination:
     #     return int(pagination[-1].get_text())
     # else:
