@@ -50,7 +50,7 @@ for item in all_products_hrefs:
     # print(all_categories_dict.split('\n\n\n\n'))
     result = re.split(r'\\n\\n\\n\\n', str(all_categories_dict))
     # print(result)
-    print(result[1])
+    print(*result[1:17], sep = '\n')
     # print(*all_categories_dict, sep='\n\n\n\n')
     # print(all_categories_dict[0])
 #
