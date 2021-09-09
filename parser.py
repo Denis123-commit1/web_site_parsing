@@ -10,6 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import csv
+import re
 
 # url = "https://leroymerlin.ru/"
 # Для того, чтобы сайт не думал что я бот и не забанил
@@ -35,16 +36,26 @@ with open("index.html", encoding='utf8') as file:
 soup = BeautifulSoup(src, "lxml")
 all_products_hrefs = soup.find_all(class_="seo-catalog")
 #
-# all_categories_dict = {}
+all_categories_dict = []
 for item in all_products_hrefs:
-    print(item)
-    # item_text = item.text
+    # print(item)
+    item_text = item.text
+    # print(item_text)
     # item_href = item.get("href")
+    # print(f'{item_text}: {item_href}')
 
+
+    all_categories_dict.append(item_text)
     # all_categories_dict[item_text] = item_href
+    # print(all_categories_dict.split('\n\n\n\n'))
+    result = re.split(r'\\n\\n\\n\\n', str(all_categories_dict))
+    # print(result)
+    print(result[1])
+    # print(*all_categories_dict, sep='\n\n\n\n')
+    # print(all_categories_dict[0])
 #
 # with open("all_categories_dict.json", "w", encoding='utf8') as file:
-    # json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
+#     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
 #
 # with open("all_categories_dict.json", encoding = "utf8") as file:
 #     all_categories = json.load(file)
