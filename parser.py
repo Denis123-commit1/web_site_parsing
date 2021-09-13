@@ -54,6 +54,14 @@ import re
 
 with open("all_categories_dict.json", encoding = "utf8") as file:
     all_categories = json.load(file)
+
+data = dict(all_categories)
+items = list(data.items())
+
+# for i in range(len(items)//500):
+#     _tmp = items[500*i:500*(i+1)]
+
+print(items[80:140])
 #
 #
 #
