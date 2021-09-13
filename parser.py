@@ -8,18 +8,20 @@ import random
 from time import sleep
 import requests
 from bs4 import BeautifulSoup
+import lxml
 import json
 import csv
 import re
+from fake_useragent import UserAgent
+UserAgent().chrome
 
 # url = "https://leroymerlin.ru/catalogue/radiatory-otopleniya/"
-url_1 = "https://leroymerlin.ru/catalogue/radiatory-stalnye/" # Для одного радиатора
-# # Для того, чтобы сайт не думал что я бот и не забанил
+# url_1 = "https://leroymerlin.ru/catalogue/radiatory-stalnye/" # Для одного радиатора
+# Для того, чтобы сайт не думал что я бот и не забанил
 headers = {
     "Accept": "*/*",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 \
-    Safari/537.36 OPR/78.0.4093.184"
+    "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2"
+
 }
 
 # Сохранить страницу для дальнейшего парсинга данных
@@ -57,10 +59,7 @@ headers = {
 #     all_categories_rollback = json.load(file)
 # data = dict(all_categories_rollback)
 # items = list(data.items())
-# # for i in range(len(items)//500):
-# #     _tmp = items[500*i:500*(i+1)]
 # all_categories_rollback_1 = items[10:11] # взяли несколько рандомных радиаторов
-# print(all_categories_rollback_1)
 
 
 
@@ -87,16 +86,14 @@ headers = {
 
 
 
-# Из полученного списка выбираем один элемент
-with open("all_categories_dict_rad_stal.json", encoding = "utf8") as file:
-    all_categories_dict_rad_stal = json.load(file)
-data = dict(all_categories_dict_rad_stal)
-items = list(data.items())
-# for i in range(len(items)//500):
-#     _tmp = items[500*i:500*(i+1)]
-all_categories_dict_rad_stal_1 = items[10:15] # взяли несколько рандомных радиаторов
-with open("all_categories_dict_rad_stal_1.json", "w", encoding='utf8') as file:
-    json.dump(all_categories_dict_rad_stal_1, file, indent=4, ensure_ascii=False)
+# Из полученного списка выбираем ПЯТЬ элемент
+# with open("all_categories_dict_rad_stal.json", encoding = "utf8") as file:
+#     all_categories_dict_rad_stal = json.load(file)
+# data = dict(all_categories_dict_rad_stal)
+# items = list(data.items())
+# all_categories_dict_rad_stal_1 = items[10:15] # взяли несколько рандомных радиаторов
+# with open("all_categories_dict_rad_stal_1.json", "w", encoding='utf8') as file:
+#     json.dump(all_categories_dict_rad_stal_1, file, indent=4, ensure_ascii=False)
 
 
 
@@ -109,20 +106,26 @@ count = 0
 for category_name, category_href in all_categories_dict_rad_stal_1:
     if count == 0:
     # Код для замены нескольких символов сразу
-        rep = [",", " ", "-", "'", "\n"]
-        for item in rep:
-            if item in category_name:
-                category_name = category_name.replace(item, "_")
-            # print(category_name)
+    #     rep = [",", " ", "-", "'", "\n"]
+    #     for item in rep:
+    #         if item in category_name:
+    #             category_name = category_name.replace(item, "_")
         req = requests.get(url=category_href, headers=headers)
         src = req.text
-        with open(f"data/{count}_{category_name}_rad_stal.html", "w", encoding = "utf8") as file:
-            file.write(src)
-        # count += 1
+
+        # with open(f"data/{count}_{category_name}_rad_stal.html", "w", encoding = "utf8") as file:
+        #     file.write(src)
 
 
 # Сбор данных
-        count += 1
+#         with open(f"data/{count}_{category_name}_rad_stal.html", "r", encoding = "utf8") as file:
+#             src = file.read()
+        soup =  BeautifulSoup(src, "lxml")
+        table_head = soup.find_all("title")
+        print(table_head)
+#
+#
+count += 1
 
 
 
