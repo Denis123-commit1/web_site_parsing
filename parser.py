@@ -30,41 +30,30 @@ import re
 # with open("index_1.html", "w", encoding = 'utf8') as file:
 #     file.write(src)
 #
-with open("index_1.html", encoding='utf8') as file:
-    src = file.read()
+# with open("index_1.html", encoding='utf8') as file:
+#     src = file.read()
+# #
+# soup = BeautifulSoup(src, "lxml")
+# all_products_hrefs = soup.find_all("a")
+# #
 #
-soup = BeautifulSoup(src, "lxml")
-all_products_hrefs = soup.find_all("a")
+# # all_p
+# all_categories_dict = {}
+# for item in all_products_hrefs:
+#     item_text = item.text
+#     item_href = "https://leroymerlin.ru" + item.get("href")
 #
-
-# all_p
-all_categories_dict = {}
-for item in all_products_hrefs:
-    # print(item)
-    item_text = item.text
-    # print(item_text)
-    item_href = "https://leroymerlin.ru" + item.get("href")
-    # print(item_href)
-    # print(f'{item_text}: {item_href}')
-    # print(type(data))
-    # print(data)
-
-
-
-    # all_categories_dict[item_text] = item_href
-    all_categories_dict[item_text] = item_href
-    # print(all_categories_dict.split('\n\n\n\n'))
-    # result = re.split(r'\\n\\n\\n\\n', str(all_categories_dict))
-    # print(result)
-    # print(*result[1:17], sep = '\n')
-    # print(*all_categories_dict, sep='\n\n\n\n')
-    # print(all_categories_dict[0])
+#
+#
+#
+#     all_categories_dict[item_text] = item_href
+#
 #
 # with open("all_categories_dict.json", "w", encoding='utf8') as file:
 #     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
 
-# with open("all_categories_dict.json", encoding = "utf8") as file:
-#     all_categories = json.load(file)
+with open("all_categories_dict.json", encoding = "utf8") as file:
+    all_categories = json.load(file)
 #
 #
 #
