@@ -13,13 +13,13 @@ import csv
 import re
 
 # url = "https://leroymerlin.ru/catalogue/"
-# # Для того, чтобы сайт не думал что я бот и не забанил
-# headers = {
-#     "Accept": "*/*",
-#     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-#     AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 \
-#     Safari/537.36 OPR/78.0.4093.184"
-# }
+# Для того, чтобы сайт не думал что я бот и не забанил
+headers = {
+    "Accept": "*/*",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
+    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 \
+    Safari/537.36 OPR/78.0.4093.184"
+}
 #
 # req = requests.get(url, headers=headers)
 # src = req.text
@@ -60,36 +60,42 @@ items = list(data.items())
 
 # for i in range(len(items)//500):
 #     _tmp = items[500*i:500*(i+1)]
-
-print(items[80:140])
-#
+all_categories_1 = items[80:118] # 2 категории взяли
 #
 #
 #     iteration_count = int(len(all_categories)) - 1
-#     count = 0
+count = 0
 #     print(f"Всего итераций: {iteration_count}")
 #
-# for category_name, category_href in all_categories.items():
-#
-# # Код для замены нескольких символов сразу
-#     rep = [",", " ", "-", "'"]
-#     for item in rep:
-#         if item in category_name:
-#             category_name = category_name.replace(item, "_")
-#     req = requests.get(url=category_href, headers=headers)
-#     src = req.text
-#
-#     with open(f"data/{count}_{category_name}.html", "w", encoding = "utf-8") as file:
-#         file.write(src)
+for category_name, category_href in all_categories_1:
+    if count == 0:
+    # Код для замены нескольких символов сразу
+        rep = [",", " ", "-", "'", "\n"]
+        for item in rep:
+            if item in category_name:
+                category_name = category_name.replace(item, "_")
+            # print(category_name)
+
+        req = requests.get(url=category_href, headers=headers)
+        src = req.text
+    #
+        with open(f"data/{count}_{category_name}.html", "w", encoding = "utf8") as file:
+            file.write(src)
+
+
+
+        count += 1
+
+
 #
 #     # Проверим что выходит на одной странице чтобы не бомбить сайт
 #
 #
-#     with open(f"data/{count}_{category_name}.html", encoding = 'utf-8') as file:
-#         src = file.read()
-#
-#
-#     soup = BeautifulSoup(src, "lxml")
+    # with open(f"data/{count}_{category_name}.html", encoding = 'utf-8') as file:
+    #     src = file.read()
+    #
+    #
+    # soup = BeautifulSoup(src, "lxml")
 #
 #     # проверка страницы на наличие таблицы с продуктами
 #     alert_block = soup.find(class_="uk-alert-danger")
