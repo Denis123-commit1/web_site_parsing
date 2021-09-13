@@ -12,21 +12,21 @@ import json
 import csv
 import re
 
-# url = "https://leroymerlin.ru/"
-# Для того, чтобы сайт не думал что я бот и не забанил
-headers = {
-    "Accept": "*/*",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
-    AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 \
-    Safari/537.36 OPR/78.0.4093.184"
-}
-
+# url = "https://leroymerlin.ru"
+# # Для того, чтобы сайт не думал что я бот и не забанил
+# headers = {
+#     "Accept": "*/*",
+#     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
+#     AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 \
+#     Safari/537.36 OPR/78.0.4093.184"
+# }
+#
 # req = requests.get(url, headers=headers)
 # src = req.text
-
-
-
-# Сохранить страницу для дальнейшего парсинга данных
+#
+#
+#
+# # Сохранить страницу для дальнейшего парсинга данных
 # with open("index.html", "w", encoding = 'utf8') as file:
 #     file.write(src)
 #
@@ -34,23 +34,26 @@ with open("index.html", encoding='utf8') as file:
     src = file.read()
 #
 soup = BeautifulSoup(src, "lxml")
-all_products_hrefs = soup.find_all(class_="seo-catalog")
+all_products_hrefs = soup.find_all("leftmenu-small")
 #
-all_categories_dict = []
+
+# all_p
+# # all_categories_dict = {}
 for item in all_products_hrefs:
-    # print(item)
-    item_text = item.text
-    # print(item_text)
-    # item_href = item.get("href")
-    # print(f'{item_text}: {item_href}')
+#     # print(item)
+#     # item_text = item.text
+#     # print(item_text)
+    item_href = item.get("href")
+    print(item_href)
+#     # print(f'{item_text}: {item_href}')
 
 
-    all_categories_dict.append(item_text)
+    # all_categories_dict[item_text] = item_href
     # all_categories_dict[item_text] = item_href
     # print(all_categories_dict.split('\n\n\n\n'))
-    result = re.split(r'\\n\\n\\n\\n', str(all_categories_dict))
+    # result = re.split(r'\\n\\n\\n\\n', str(all_categories_dict))
     # print(result)
-    print(*result[1:17], sep = '\n')
+    # print(*result[1:17], sep = '\n')
     # print(*all_categories_dict, sep='\n\n\n\n')
     # print(all_categories_dict[0])
 #
