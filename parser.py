@@ -38,18 +38,21 @@ all_products_hrefs = soup.find_all("a")
 #
 
 # all_p
-# # all_categories_dict = {}
+all_categories_dict = {}
 for item in all_products_hrefs:
     # print(item)
     item_text = item.text
     # print(item_text)
     item_href = "https://leroymerlin.ru" + item.get("href")
     # print(item_href)
-    print(f'{item_text}: {item_href}')
+    # print(f'{item_text}: {item_href}')
+    # print(type(data))
+    # print(data)
+
 
 
     # all_categories_dict[item_text] = item_href
-    # all_categories_dict[item_text] = item_href
+    all_categories_dict[item_text] = item_href
     # print(all_categories_dict.split('\n\n\n\n'))
     # result = re.split(r'\\n\\n\\n\\n', str(all_categories_dict))
     # print(result)
@@ -59,7 +62,7 @@ for item in all_products_hrefs:
 #
 # with open("all_categories_dict.json", "w", encoding='utf8') as file:
 #     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
-#
+
 # with open("all_categories_dict.json", encoding = "utf8") as file:
 #     all_categories = json.load(file)
 #
