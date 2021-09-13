@@ -94,8 +94,38 @@ data = dict(all_categories_dict_rad_stal)
 items = list(data.items())
 # for i in range(len(items)//500):
 #     _tmp = items[500*i:500*(i+1)]
-all_categories_dict_rad_stal_1 = items[10:11] # взяли несколько рандомных радиаторов
-print(all_categories_dict_rad_stal_1)
+all_categories_dict_rad_stal_1 = items[10:15] # взяли несколько рандомных радиаторов
+with open("all_categories_dict_rad_stal_1.json", "w", encoding='utf8') as file:
+    json.dump(all_categories_dict_rad_stal_1, file, indent=4, ensure_ascii=False)
+
+
+
+
+
+# Редактируем список, который сделали выше
+with open("all_categories_dict_rad_stal_1.json", encoding = "utf8") as file:
+    all_categories_dict_rad_stal_1 = json.load(file)
+count = 0
+for category_name, category_href in all_categories_dict_rad_stal_1:
+    if count == 0:
+    # Код для замены нескольких символов сразу
+        rep = [",", " ", "-", "'", "\n"]
+        for item in rep:
+            if item in category_name:
+                category_name = category_name.replace(item, "_")
+            # print(category_name)
+        req = requests.get(url=category_href, headers=headers)
+        src = req.text
+        with open(f"data/{count}_{category_name}_rad_stal.html", "w", encoding = "utf8") as file:
+            file.write(src)
+        # count += 1
+
+
+# Сбор данных
+        count += 1
+
+
+
 
 
 # Собираем нужные нам данные с этого элемента
