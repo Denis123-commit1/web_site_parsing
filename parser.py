@@ -13,6 +13,7 @@ import csv
 import re
 
 # url = "https://leroymerlin.ru/catalogue/radiatory-otopleniya/"
+url_1 = "https://leroymerlin.ru/catalogue/radiatory-stalnye/" # Для одного радиатора
 # # Для того, чтобы сайт не думал что я бот и не забанил
 headers = {
     "Accept": "*/*",
@@ -36,7 +37,6 @@ headers = {
 #     src = file.read()
 # soup = BeautifulSoup(src, "lxml")
 # all_products_hrefs = soup.find_all("a")
-# # all_p
 # all_categories_dict = {}
 # for item in all_products_hrefs:
 #     item_text = item.text
@@ -65,7 +65,47 @@ headers = {
 
 
 
+# В категории одного радиатора создаем html страничку
+# req = requests.get(url_1, headers=headers)
+# src = req.text
+# with open("index_rollback_radiators_stal.html", "w", encoding = 'utf8') as file:
+#     file.write(src)
+
+
 # В категории одного радиатора находим список товаров
+# with open("index_rollback_radiators_stal.html", encoding='utf8') as file:
+#     src = file.read()
+# soup = BeautifulSoup(src, "lxml")
+# all_products_hrefs = soup.find_all("a")
+# all_categories_dict_rad_stal = {}
+# for item in all_products_hrefs:
+#     item_text = item.text
+#     item_href = "https://leroymerlin.ru/catalogue/radiatory-stalnye" + item.get("href")
+#     all_categories_dict_rad_stal[item_text] = item_href
+# with open("all_categories_dict_rad_stal.json", "w", encoding='utf8') as file:
+#     json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False)
+
+
+
+# Из полученного списка выбираем один элемент
+with open("all_categories_dict_rad_stal.json", encoding = "utf8") as file:
+    all_categories_dict_rad_stal = json.load(file)
+data = dict(all_categories_dict_rad_stal)
+items = list(data.items())
+# for i in range(len(items)//500):
+#     _tmp = items[500*i:500*(i+1)]
+all_categories_dict_rad_stal_1 = items[10:11] # взяли несколько рандомных радиаторов
+print(all_categories_dict_rad_stal_1)
+
+
+# Собираем нужные нам данные с этого элемента
+
+
+
+
+
+
+
 
 
 
