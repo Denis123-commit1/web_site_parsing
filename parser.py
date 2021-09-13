@@ -12,7 +12,7 @@ import json
 import csv
 import re
 
-# url = "https://leroymerlin.ru"
+# url = "https://leroymerlin.ru/catalogue/"
 # # Для того, чтобы сайт не думал что я бот и не забанил
 # headers = {
 #     "Accept": "*/*",
@@ -27,25 +27,25 @@ import re
 #
 #
 # # Сохранить страницу для дальнейшего парсинга данных
-# with open("index.html", "w", encoding = 'utf8') as file:
+# with open("index_1.html", "w", encoding = 'utf8') as file:
 #     file.write(src)
 #
-with open("index.html", encoding='utf8') as file:
+with open("index_1.html", encoding='utf8') as file:
     src = file.read()
 #
 soup = BeautifulSoup(src, "lxml")
-all_products_hrefs = soup.find_all("leftmenu-small")
+all_products_hrefs = soup.find_all("a")
 #
 
 # all_p
 # # all_categories_dict = {}
 for item in all_products_hrefs:
-#     # print(item)
-#     # item_text = item.text
-#     # print(item_text)
-    item_href = item.get("href")
-    print(item_href)
-#     # print(f'{item_text}: {item_href}')
+    # print(item)
+    item_text = item.text
+    # print(item_text)
+    item_href = "https://leroymerlin.ru" + item.get("href")
+    # print(item_href)
+    print(f'{item_text}: {item_href}')
 
 
     # all_categories_dict[item_text] = item_href
