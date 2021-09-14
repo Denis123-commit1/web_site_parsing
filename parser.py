@@ -54,13 +54,13 @@ def get_ip(html):
         item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
         item_name = re.search(item.text[13:80], item.text)
         item_data = datetime.now()
-        # item_price = re.search('\d{4}\s₽/шт', item.text)
+        item_price = re.search('\d{3}\s₽/шт', item.text)
         # print(item_price.start())
         # item_price = re.search('\d{3}\s₽/шт', item.text)
         # if item_price:
         #     item_price.group(0).replace(" ","")
 
-        all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data
+        all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0)
     with open("all_categories_dict_rad_stal_attempt_art_name_link.json", "w", encoding='utf8') as file:
         json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False, sort_keys=True, default=str)
     print('-----------')
