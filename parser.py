@@ -22,7 +22,7 @@ from random import uniform
 
 # Настраиваем несколько прокси
 
-def get_html(url, useragent = None, proxies = proxy):
+def get_html(url, useragent = None, proxy = None):
     print('get_html')
     r = requests.get(url, headers = useragent, proxies = proxy)
     return r.text
@@ -30,9 +30,11 @@ def get_html(url, useragent = None, proxies = proxy):
 def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
-    ip.soup.find('span', class_ = 'ip').text.strip()
+    ip = soup.find('span', class_ = 'ip').text.strip()
     ua = soup.find('span', class_ = 'ip').find_next_sibling('span').text.strip()
-
+    print(ip)
+    print(ua)
+    print('-----------')
 
 def main():
     url = 'http://sitespy.ru/my-ip'
@@ -48,128 +50,130 @@ def main():
             html = get_html(url, useragent, proxy)
         except:
             continue
-        get_ip(html)
-
+        try:
+            get_ip(html)
+        except AttributeError:
+            continue
 
 # Создание точки входа
 if __name__ == '__main__':
     main()
 
-
-
-
-
-# url = "https://leroymerlin.ru/catalogue/radiatory-otopleniya/"
-# url_1 = "https://leroymerlin.ru/catalogue/radiatory-stalnye/" # Для одного радиатора
-# Для того, чтобы сайт не думал что я бот и не забанил
-headers = {
-    "Accept": "*/*",
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2"
-
-}
-
-# Сохранить страницу для дальнейшего парсинга данных
-# req = requests.get(url, headers=headers)
-# src = req.text
-# with open("index_rollback.html", "w", encoding = 'utf8') as file:
-#     file.write(src)
-
-
-
-
-
-# Получение списка радиаторов
-# with open("index_rollback.html", encoding='utf8') as file:
-#     src = file.read()
-# soup = BeautifulSoup(src, "lxml")
-# all_products_hrefs = soup.find_all("a")
-# all_categories_dict = {}
-# for item in all_products_hrefs:
-#     item_text = item.text
-#     item_href = "https://leroymerlin.ru" + item.get("href")
-#     all_categories_dict[item_text] = item_href
-# with open("all_categories_dict_rollback.json", "w", encoding='utf8') as file:
-#     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
-
-
-
-
-
-
-
-
-# Сокращаем список из радиаторов до одного (преобразование в список и по индексу берем)
-# with open("all_categories_dict_rollback.json", encoding = "utf8") as file:
-#     all_categories_rollback = json.load(file)
-# data = dict(all_categories_rollback)
-# items = list(data.items())
-# all_categories_rollback_1 = items[10:11] # взяли несколько рандомных радиаторов
-
-
-
-
-# В категории одного радиатора создаем html страничку
-# req = requests.get(url_1, headers=headers)
-# src = req.text
-# with open("index_rollback_radiators_stal.html", "w", encoding = 'utf8') as file:
-#     file.write(src)
-
-
-# В категории одного радиатора находим список товаров
-# with open("index_rollback_radiators_stal.html", encoding='utf8') as file:
-#     src = file.read()
-# soup = BeautifulSoup(src, "lxml")
-# all_products_hrefs = soup.find_all("a")
-# all_categories_dict_rad_stal = {}
-# for item in all_products_hrefs:
-#     item_text = item.text
-#     item_href = "https://leroymerlin.ru/catalogue/radiatory-stalnye" + item.get("href")
-#     all_categories_dict_rad_stal[item_text] = item_href
-# with open("all_categories_dict_rad_stal.json", "w", encoding='utf8') as file:
-#     json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False)
-
-
-
-# Из полученного списка выбираем ПЯТЬ элемент
-# with open("all_categories_dict_rad_stal.json", encoding = "utf8") as file:
-#     all_categories_dict_rad_stal = json.load(file)
-# data = dict(all_categories_dict_rad_stal)
-# items = list(data.items())
-# all_categories_dict_rad_stal_1 = items[10:15] # взяли несколько рандомных радиаторов
-# with open("all_categories_dict_rad_stal_1.json", "w", encoding='utf8') as file:
-#     json.dump(all_categories_dict_rad_stal_1, file, indent=4, ensure_ascii=False)
-
-
-
-
-
-# Редактируем список, который сделали выше
-with open("all_categories_dict_rad_stal_1.json", encoding = "utf8") as file:
-    all_categories_dict_rad_stal_1 = json.load(file)
-count = 0
-for category_name, category_href in all_categories_dict_rad_stal_1:
-    if count == 0:
-    # Код для замены нескольких символов сразу
-    #     rep = [",", " ", "-", "'", "\n"]
-    #     for item in rep:
-    #         if item in category_name:
-    #             category_name = category_name.replace(item, "_")
-        req = requests.get(url=category_href, headers=headers)
-        src = req.text
-
-        # with open(f"data/{count}_{category_name}_rad_stal.html", "w", encoding = "utf8") as file:
-        #     file.write(src)
-
-
-# Сбор данных
-#         with open(f"data/{count}_{category_name}_rad_stal.html", "r", encoding = "utf8") as file:
-#             src = file.read()
-        soup =  BeautifulSoup(src, "lxml")
-        table_head = soup.find_all("title")
-        print(table_head)
 #
 #
-count += 1
+#
+#
+# # url = "https://leroymerlin.ru/catalogue/radiatory-otopleniya/"
+# # url_1 = "https://leroymerlin.ru/catalogue/radiatory-stalnye/" # Для одного радиатора
+# # Для того, чтобы сайт не думал что я бот и не забанил
+# headers = {
+#     "Accept": "*/*",
+#     "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.2 (KHTML, like Gecko) Chrome/22.0.1216.0 Safari/537.2"
+#
+# }
+#
+# # Сохранить страницу для дальнейшего парсинга данных
+# # req = requests.get(url, headers=headers)
+# # src = req.text
+# # with open("index_rollback.html", "w", encoding = 'utf8') as file:
+# #     file.write(src)
+#
+#
+#
+#
+#
+# # Получение списка радиаторов
+# # with open("index_rollback.html", encoding='utf8') as file:
+# #     src = file.read()
+# # soup = BeautifulSoup(src, "lxml")
+# # all_products_hrefs = soup.find_all("a")
+# # all_categories_dict = {}
+# # for item in all_products_hrefs:
+# #     item_text = item.text
+# #     item_href = "https://leroymerlin.ru" + item.get("href")
+# #     all_categories_dict[item_text] = item_href
+# # with open("all_categories_dict_rollback.json", "w", encoding='utf8') as file:
+# #     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
+#
+#
+#
+#
+#
+#
+#
+#
+# # Сокращаем список из радиаторов до одного (преобразование в список и по индексу берем)
+# # with open("all_categories_dict_rollback.json", encoding = "utf8") as file:
+# #     all_categories_rollback = json.load(file)
+# # data = dict(all_categories_rollback)
+# # items = list(data.items())
+# # all_categories_rollback_1 = items[10:11] # взяли несколько рандомных радиаторов
+#
+#
+#
+#
+# # В категории одного радиатора создаем html страничку
+# # req = requests.get(url_1, headers=headers)
+# # src = req.text
+# # with open("index_rollback_radiators_stal.html", "w", encoding = 'utf8') as file:
+# #     file.write(src)
+#
+#
+# # В категории одного радиатора находим список товаров
+# # with open("index_rollback_radiators_stal.html", encoding='utf8') as file:
+# #     src = file.read()
+# # soup = BeautifulSoup(src, "lxml")
+# # all_products_hrefs = soup.find_all("a")
+# # all_categories_dict_rad_stal = {}
+# # for item in all_products_hrefs:
+# #     item_text = item.text
+# #     item_href = "https://leroymerlin.ru/catalogue/radiatory-stalnye" + item.get("href")
+# #     all_categories_dict_rad_stal[item_text] = item_href
+# # with open("all_categories_dict_rad_stal.json", "w", encoding='utf8') as file:
+# #     json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False)
+#
+#
+#
+# # Из полученного списка выбираем ПЯТЬ элемент
+# # with open("all_categories_dict_rad_stal.json", encoding = "utf8") as file:
+# #     all_categories_dict_rad_stal = json.load(file)
+# # data = dict(all_categories_dict_rad_stal)
+# # items = list(data.items())
+# # all_categories_dict_rad_stal_1 = items[10:15] # взяли несколько рандомных радиаторов
+# # with open("all_categories_dict_rad_stal_1.json", "w", encoding='utf8') as file:
+# #     json.dump(all_categories_dict_rad_stal_1, file, indent=4, ensure_ascii=False)
+#
+#
+#
+#
+#
+# # Редактируем список, который сделали выше
+# with open("all_categories_dict_rad_stal_1.json", encoding = "utf8") as file:
+#     all_categories_dict_rad_stal_1 = json.load(file)
+# count = 0
+# for category_name, category_href in all_categories_dict_rad_stal_1:
+#     if count == 0:
+#     # Код для замены нескольких символов сразу
+#     #     rep = [",", " ", "-", "'", "\n"]
+#     #     for item in rep:
+#     #         if item in category_name:
+#     #             category_name = category_name.replace(item, "_")
+#         req = requests.get(url=category_href, headers=headers)
+#         src = req.text
+#
+#         # with open(f"data/{count}_{category_name}_rad_stal.html", "w", encoding = "utf8") as file:
+#         #     file.write(src)
+#
+#
+# # Сбор данных
+# #         with open(f"data/{count}_{category_name}_rad_stal.html", "r", encoding = "utf8") as file:
+# #             src = file.read()
+#         soup =  BeautifulSoup(src, "lxml")
+#         table_head = soup.find_all("title")
+#         print(table_head)
+#
+#
+# count += 1
 
 
 
