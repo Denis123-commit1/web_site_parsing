@@ -32,14 +32,14 @@ def get_html(url, useragent = None, proxy = None):
 def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
-    ip = soup.find('span', class_ = 't9jup0e_plp').text.strip()
-    ua = soup.find('div', class_ = 'phytpj4_plp').find_next('a').get('href')
-    time_now = datetime.now()
-    price = soup.find('p', class_ = 't3y6ha_plp').text.strip()
-    print(ip)
-    print(ua)
-    print(time_now)
-    print(price + ' руб')
+    all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
+    all_categories_dict_rad_stal = {}
+    for item in all_products_hrefs:
+        item_text = item.text
+        item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
+        all_categories_dict_rad_stal[item_text] = item_href
+    with open("all_categories_dict_rad_stal_attempt.json", "w", encoding='utf8') as file:
+        json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False)
     print('-----------')
 
 def main():
