@@ -48,12 +48,13 @@ def get_ip(html):
     all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
     all_categories_dict_rad_stal = {}
     for item in all_products_hrefs:
-        item_art = re.search('\d{8}', item.text)
-        if item_art:
-            item_art.group(0)
+        item_text = item.text
+        # item_art = re.search('\d{8}', item.text)
+        # if item_art:
+        #     item_art.group(0)
         item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
-        all_categories_dict_rad_stal[item_art.group(0)] = item_href
-    with open("all_categories_dict_rad_stal_attempt.json", "w", encoding='utf8') as file:
+        all_categories_dict_rad_stal[item_text] = item_href
+    with open("all_categories_dict_rad_stal_attempt_for_regex.json", "w", encoding='utf8') as file:
         json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False)
     print('-----------')
 
