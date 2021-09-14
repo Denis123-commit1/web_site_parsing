@@ -31,9 +31,9 @@ def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
     ip = soup.find('span', class_ = 't9jup0e_plp').text.strip()
-    # ua = soup.find('span', class_ = 't9jup0e_plp').find_next_sibling('a').text.strip()
+    ua = soup.find('div', class_ = 'phytpj4_plp').find_next('a').get('href')
     print(ip)
-    # print(ua)
+    print(ua)
     print('-----------')
 
 def main():
