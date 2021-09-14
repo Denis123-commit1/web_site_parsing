@@ -30,14 +30,14 @@ def get_html(url, useragent = None, proxy = None):
 def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
-    ip = soup.find('span', class_ = 'ip').text.strip()
-    ua = soup.find('span', class_ = 'ip').find_next_sibling('span').text.strip()
+    ip = soup.find('span', class_ = 't9jup0e_plp').text.strip()
+    # ua = soup.find('span', class_ = 't9jup0e_plp').find_next_sibling('a').text.strip()
     print(ip)
-    print(ua)
+    # print(ua)
     print('-----------')
 
 def main():
-    url = 'http://sitespy.ru/my-ip'
+    url = 'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
     useragents = open('useragents.txt').read().split('\n')
     proxies = open('proxies.txt').read().split('\n')
 
