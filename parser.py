@@ -1,5 +1,7 @@
 # Леруа Мерлен
 
+
+
 # This is the way
 # Author: pythontoday
 # YouTube: https://www.youtube.com/c/PythonToday/videos
@@ -12,8 +14,50 @@ import lxml
 import json
 import csv
 import re
-from fake_useragent import UserAgent
-UserAgent().chrome
+from random import choice
+from random import uniform
+# from fake_useragent import UserAgent
+# UserAgent().chrome
+
+
+# Настраиваем несколько прокси
+
+def get_html(url, useragent = None, proxies = proxy):
+    print('get_html')
+    r = requests.get(url, headers = useragent, proxies = proxy)
+    return r.text
+
+def get_ip(html):
+    print('New proxy & New UserAgent:')
+    soup = BeautifulSoup(html, 'lxml')
+    ip.soup.find('span', class_ = 'ip').text.strip()
+    ua = soup.find('span', class_ = 'ip').find_next_sibling('span').text.strip()
+
+
+def main():
+    url = 'http://sitespy.ru/my-ip'
+    useragents = open('useragents.txt').read().split('\n')
+    proxies = open('proxies.txt').read().split('\n')
+
+    for i in range(10):
+        sleep(uniform(3, 12))
+        proxy = {'http': 'http://' + choice(proxies)}
+        useragent = {'User-Agent': choice(useragents)}
+
+        try:
+            html = get_html(url, useragent, proxy)
+        except:
+            continue
+        get_ip(html)
+
+
+# Создание точки входа
+if __name__ == '__main__':
+    main()
+
+
+
+
 
 # url = "https://leroymerlin.ru/catalogue/radiatory-otopleniya/"
 # url_1 = "https://leroymerlin.ru/catalogue/radiatory-stalnye/" # Для одного радиатора
