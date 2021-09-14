@@ -29,15 +29,30 @@ def get_html(url, useragent = None, proxy = None):
     r = requests.get(url, headers = useragent, proxies = proxy)
     return r.text
 
+# def file_regex:
+#     with open ('all_categories_dict_rad_stal_attempt.json').read()
+
+# import re
+# lst = [1234, 'abc', 'th134']
+# lst = f'{lst}'
+# result = re.search('\d{4}', lst)
+# if result:
+#     print(result.group(0))
+
+
+
+
 def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
     all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
     all_categories_dict_rad_stal = {}
     for item in all_products_hrefs:
-        item_text = item.text
+        item_art = re.search('\d{8}', item.text)
+        if item_art:
+            item_art.group(0)
         item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
-        all_categories_dict_rad_stal[item_text] = item_href
+        all_categories_dict_rad_stal[item_art.group(0)] = item_href
     with open("all_categories_dict_rad_stal_attempt.json", "w", encoding='utf8') as file:
         json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False)
     print('-----------')
