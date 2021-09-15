@@ -54,12 +54,13 @@ def get_ip(html):
 
 
 def main():
-    for i in range(0, 20, 1):
-        url = f'https://leroymerlin.ru/catalogue/radiatory-otopleniya/?page={i}'
+    for page in range(0, 20, 1):
+        print(page)
+        url = f'https://leroymerlin.ru/catalogue/radiatory-otopleniya/?page={page}'
         useragents = open('useragents.txt').read().split('\n')
         proxies = open('proxies.txt').read().split('\n')
 
-        for i in range(10):
+        for i in range(4):
             sleep(uniform(3, 12))
             proxy = {'http': 'http://' + choice(proxies)}
             useragent = {'User-Agent': choice(useragents)}
