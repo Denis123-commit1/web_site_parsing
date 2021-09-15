@@ -31,140 +31,19 @@ def get_html(url, useragent = None, proxy = None):
 
 def get_ip(html):
     soup = BeautifulSoup(html, "lxml")
-    all_products_hrefs = soup.find_all("a", class_="bex6mjh_plp")
+    all_products_hrefs = soup.find_all("div", class_="c9eb07n_plp")
 
     all_categories_dict_for_radiators_and_elther = {}
     for item in all_products_hrefs:
         item_text = item.text
-        item_href = 'https://leroymerlin.ru/' + item.get("href")
+        item_href_1 = 'https://leroymerlin.ru/' + item.find_next('a').get("href")
 
-        all_categories_dict_for_radiators_and_elther[item_text] = item_href
+        all_categories_dict_for_radiators_and_elther[item_text] = item_href_1
 
     with open("all_categories_dict_for_radiators_and_elther.json", "w", encoding='utf8') as file:
         json.dump(all_categories_dict_for_radiators_and_elther, file, indent=4, ensure_ascii=False)
     print('---'*20)
 
-
-
-    with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
-        all_categories = json.load(file)
-
-        iteration_count = int(len(all_categories)) - 1
-        count = 0
-        print(f"Всего итераций: {iteration_count}")
-
-    for category_name, category_href in all_categories.items():
-        if len(item) > 65:
-            all_categories.append(item)
-        # Код для замены нескольких символов сразу
-        rep = [",", " ", "-", "'"]
-        for item in rep:
-            if item in category_name:
-                category_name = category_name.replace(item, "_")
-
-        req = requests.get(url=category_href)
-        result = req.text
-
-        for
-
-        with open(f"data/{count}_{category_name}.html", "w", encoding="utf-8") as file:
-            file.write(result)
-
-        # Проверим что выходит на одной странице чтобы не бомбить сайт
-
-        with open(f"data/{count}_{category_name}.html", encoding='utf-8') as file:
-            result = file.read()
-
-        soup = BeautifulSoup(result, "lxml")
-
-        # проверка страницы на наличие таблицы с материалами
-        # alert_block = soup.find(class_="uk-alert-danger")
-        # if alert_block is not None:
-        #     continue
-
-        # собираем заголовки таблицы
-        table_head = soup.find(class_="mzr-tc-group-table").find("tr").find_all("th")
-
-        product = table_head[0].text
-        calories = table_head[1].text
-        proteins = table_head[2].text
-        fats = table_head[3].text
-        carbohydrates = table_head[4].text
-
-        all_categories_dict_rad_stal_for_all_pages = []
-        print('New proxy & New UserAgent:')
-        soup = BeautifulSoup(html, 'lxml')
-        all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
-        all_categories_dict_rad_stal = {}
-        for item in all_products_hrefs:
-            item_art = re.search('\d{8}', item.text)
-            if item_art:
-                item_art.group(0)
-            item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
-            item_name = re.search(item.text[13:80], item.text)
-            item_data = datetime.now()
-            item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
-
-        with open(f"data/{count}_{category_name}.csv", "w", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            writer.writerow(
-                (
-                    item_art,
-                    item_name,
-                    item_data,
-                    item_href,
-                    item_price
-                )
-            )
-
-        # собираем данные продуктов
-        products_data = soup.find(class_="mzr-tc-group-table").find("tbody").find_all("tr")
-
-        product_info = []
-        for item in products_data:
-            product_tds = item.find_all("td")
-
-            title = product_tds[0].find("a").text
-            calories = product_tds[1].text
-            proteins = product_tds[2].text
-            fats = product_tds[3].text
-            carbohydrates = product_tds[4].text
-
-            product_info.append(
-                {
-                    "Title": title,
-                    "Calories": calories,
-                    "Proteins": proteins,
-                    "Fats": fats,
-                    "Carbohydrates": carbohydrates
-                }
-            )
-            with open(f"data/{count}_{category_name}.csv", "a", encoding="utf-8") as file:
-                writer = csv.writer(file)
-                writer.writerow(
-                    (
-                        title,
-                        calories,
-                        proteins,
-                        fats,
-                        carbohydrates
-                    )
-                )
-        with open(f"data/{count}_{category_name}.json", "a", encoding="utf-8") as file:
-            json.dump(product_info, file, indent=4, ensure_ascii=False)
-
-        count += 1
-        print(f"# Итерация {count}. {category_name} записан...")
-        iteration_count = iteration_count - 1
-
-        if iteration_count == 0:
-            print("Работа завершена")
-            break
-
-        print(f"Осталось итераций: {iteration_count}")
-        sleep(random.randrange(2, 4))
-
-    # all_categories_dict_rad_stal_for_all_pages = []
     # print('New proxy & New UserAgent:')
     # soup = BeautifulSoup(html, 'lxml')
     # all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
@@ -178,33 +57,46 @@ def get_ip(html):
     #     item_data = datetime.now()
     #     item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
     #     for_adding = all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
-    #     all_categories_dict_rad_stal_for_all_pages.append(for_adding)
     #
-    # with open('all_categories_dict_rad_stal_for_all_pages.json', 'a', encoding = 'utf-8') as file:
-    #     json.dump(all_categories_dict_rad_stal_for_all_pages, file, indent=4, ensure_ascii=False, sort_keys=False, default=str)
-    #     print('--'*10)
-    #
+    #     with open(f"data/{item_text}.csv", "w", encoding="utf-8") as file:
+    #         writer = csv.writer(file)
+    #         writer.writerow(
+    #             (
+    #                 item_href,
+    #                 item_art.group(0),
+    #                 item_data,
+    #                 item_price.group(0).replace(" ",""),
+    #                 item_name.group(0)
+    #             )
+    #         )
+
 
 
 
 
 def main():
-    url = f'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
-    useragents = open('useragents.txt').read().split('\n')
-    proxies = open('proxies.txt').read().split('\n')
-    # Создаем видимость что парсит человек и рандомизируем прокси и юзер агент
-    for i in range(4):
-        sleep(uniform(3, 12))
-        proxy = {'http': 'http://' + choice(proxies)}
-        useragent = {'User-Agent': choice(useragents)}
-        try:
-            html = get_html(url, useragent, proxy)
-        except:
-            continue
-        try:
-            get_ip(html)
-        except AttributeError:
-            continue
+    with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
+        all_categories = json.load(file)
+
+    for item_text ,item_href_1 in all_categories.items():
+        if len(item_text) > 20:
+            url = f'{item_href_1}'
+            # print(url)
+            useragents = open('useragents.txt').read().split('\n')
+            proxies = open('proxies.txt').read().split('\n')
+            # Создаем видимость что парсит человек и рандомизируем прокси и юзер агент
+            # for i in range(4):
+            sleep(uniform(3, 12))
+            proxy = {'http': 'http://' + choice(proxies)}
+            useragent = {'User-Agent': choice(useragents)}
+            try:
+                html = get_html(url, useragent, proxy)
+            except:
+                continue
+            try:
+                get_ip(html)
+            except AttributeError:
+                continue
 
 
 
