@@ -18,27 +18,14 @@ from random import choice
 from random import uniform
 from datetime import datetime
 
-# from fake_useragent import UserAgent
-# UserAgent().chrome
+
 
 
 # Настраиваем несколько прокси
-
 def get_html(url, useragent = None, proxy = None):
     print('get_html')
     r = requests.get(url, headers = useragent, proxies = proxy)
     return r.text
-
-# def file_regex:
-#     with open ('all_categories_dict_rad_stal_attempt.json').read()
-
-# import re
-# lst = [1234, 'abc', 'th134']
-# lst = f'{lst}'
-# result = re.search('\d{4}', lst)
-# if result:
-#     print(result.group(0))
-
 
 
 
@@ -55,15 +42,15 @@ def get_ip(html):
         item_name = re.search(item.text[13:80], item.text)
         item_data = datetime.now()
         item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
-        # print(item_price.start())
-        # item_price = re.search('\d{3}\s₽/шт', item.text)
-        # if item_price:
-        #     item_price.group(0).replace(" ","")
+
 
         all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
     with open("all_categories_dict_rad_stal_attempt_art_name_link.json", "w", encoding='utf8') as file:
         json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False, sort_keys=False, default=str)
     print('-----------')
+
+
+
 
 def main():
     url = 'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
@@ -74,7 +61,6 @@ def main():
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
-
         try:
             html = get_html(url, useragent, proxy)
         except:
@@ -83,6 +69,8 @@ def main():
             get_ip(html)
         except AttributeError:
             continue
+
+
 
 # Создание точки входа
 if __name__ == '__main__':
