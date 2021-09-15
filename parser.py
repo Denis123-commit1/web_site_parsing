@@ -55,7 +55,7 @@ def get_ip(html):
 
 
 def main():
-    for page in range(0, 20, 1):
+    for page in range(0, 2, 1):
         print(page)
         url = f'https://leroymerlin.ru/catalogue/radiatory-otopleniya/?page={page}'
         useragents = open('useragents.txt').read().split('\n')
