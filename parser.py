@@ -31,13 +31,13 @@ def get_html(url, useragent = None, proxy = None):
 
 def get_ip(html):
     soup = BeautifulSoup(html, "lxml")
-    all_products_hrefs = soup.find_all("div", class_="c9eb07n_plp")
+    all_products_hrefs = soup.find_all("a", class_="bex6mjh_plp")
 
     all_categories_dict_for_radiators_and_elther = {}
     for item in all_products_hrefs:
         item_text = item.text
         item_href_1 = 'https://leroymerlin.ru/' + item.find_next('a').get("href")
-
+        # print(item_href_1)
         all_categories_dict_for_radiators_and_elther[item_text] = item_href_1
 
     with open("all_categories_dict_for_radiators_and_elther.json", "w", encoding='utf8') as file:
@@ -75,28 +75,29 @@ def get_ip(html):
 
 
 def main():
-    with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
-        all_categories = json.load(file)
-
-    for item_text ,item_href_1 in all_categories.items():
-        if len(item_text) > 20:
-            url = f'{item_href_1}'
+    # with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
+    #     all_categories = json.load(file)
+    #
+    # for item_text ,item_href_1 in all_categories.items():
+    #     if len(item_text) > 20:
+    #         url = f'{item_href_1}'
+            url = 'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
             # print(url)
             useragents = open('useragents.txt').read().split('\n')
             proxies = open('proxies.txt').read().split('\n')
             # Создаем видимость что парсит человек и рандомизируем прокси и юзер агент
-            # for i in range(4):
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            try:
-                html = get_html(url, useragent, proxy)
-            except:
-                continue
-            try:
-                get_ip(html)
-            except AttributeError:
-                continue
+            for i in range(4):
+                sleep(uniform(3, 12))
+                proxy = {'http': 'http://' + choice(proxies)}
+                useragent = {'User-Agent': choice(useragents)}
+                try:
+                    html = get_html(url, useragent, proxy)
+                except:
+                    continue
+                try:
+                    get_ip(html)
+                except AttributeError:
+                    continue
 
 
 
