@@ -75,29 +75,29 @@ def get_ip(html):
 
 
 def main():
-    # with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
-    #     all_categories = json.load(file)
+    # После запуска этой функции словарь, который мне нужен, очищается
+    with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
+        all_categories = json.load(file)
     #
-    # for item_text ,item_href_1 in all_categories.items():
-    #     if len(item_text) > 20:
-    #         url = f'{item_href_1}'
-            url = 'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
+    for item_text ,item_href_1 in all_categories.items():
+        url = f'{item_href_1}'
+            # url = 'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
             # print(url)
-            useragents = open('useragents.txt').read().split('\n')
-            proxies = open('proxies.txt').read().split('\n')
-            # Создаем видимость что парсит человек и рандомизируем прокси и юзер агент
-            for i in range(4):
-                sleep(uniform(3, 12))
-                proxy = {'http': 'http://' + choice(proxies)}
-                useragent = {'User-Agent': choice(useragents)}
-                try:
-                    html = get_html(url, useragent, proxy)
-                except:
-                    continue
-                try:
-                    get_ip(html)
-                except AttributeError:
-                    continue
+        useragents = open('useragents.txt').read().split('\n')
+        proxies = open('proxies.txt').read().split('\n')
+        # Создаем видимость что парсит человек и рандомизируем прокси и юзер агент
+        for i in range(4):
+            sleep(uniform(3, 12))
+            proxy = {'http': 'http://' + choice(proxies)}
+            useragent = {'User-Agent': choice(useragents)}
+            try:
+                html = get_html(url, useragent, proxy)
+            except:
+                continue
+            try:
+                get_ip(html)
+            except AttributeError:
+                continue
 
 
 
