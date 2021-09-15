@@ -36,7 +36,7 @@ def get_ip(html):
     all_categories_dict_for_radiators_and_elther = {}
     for item in all_products_hrefs:
         item_text = item.text
-        item_href_1 = 'https://leroymerlin.ru/' + item.find_next('a').get("href")
+        item_href_1 = 'https://leroymerlin.ru/' + item.find_next('link').get("href")
         # print(item_href_1)
         all_categories_dict_for_radiators_and_elther[item_text] = item_href_1
 
