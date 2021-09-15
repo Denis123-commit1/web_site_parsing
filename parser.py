@@ -47,9 +47,8 @@ def get_ip(html):
         all_categories_dict_rad_stal_for_all_pages.append(for_adding)
 
     with open('all_categories_dict_rad_stal_for_all_pages.json', 'a', encoding = 'utf-8') as file:
-        for line in all_categories_dict_rad_stal_for_all_pages:
-            file.write(f'{line}\n')
-            print('--'*10)
+        json.dump(all_categories_dict_rad_stal_for_all_pages, file, indent=4, ensure_ascii=False, sort_keys=False, default=str)
+        print('--'*10)
 
 
 
@@ -61,19 +60,18 @@ def main():
         url = f'https://leroymerlin.ru/catalogue/radiatory-otopleniya/?page={page}'
         useragents = open('useragents.txt').read().split('\n')
         proxies = open('proxies.txt').read().split('\n')
-
-        for i in range(4):
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            try:
-                html = get_html(url, useragent, proxy)
-            except:
-                continue
-            try:
-                get_ip(html)
-            except AttributeError:
-                continue
+        # Создаем видимость что парсит человек и рандомизируем прокси и юзер агент
+        sleep(uniform(3, 12))
+        proxy = {'http': 'http://' + choice(proxies)}
+        useragent = {'User-Agent': choice(useragents)}
+        try:
+            html = get_html(url, useragent, proxy)
+        except:
+            continue
+        try:
+            get_ip(html)
+        except AttributeError:
+            continue
 
 
 
