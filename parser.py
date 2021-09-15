@@ -30,6 +30,7 @@ def get_html(url, useragent = None, proxy = None):
 
 
 def get_ip(html):
+    all_categories_dict_rad_stal_for_all_pages = []
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
     all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
@@ -42,12 +43,13 @@ def get_ip(html):
         item_name = re.search(item.text[13:80], item.text)
         item_data = datetime.now()
         item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
+        for_adding = all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
+        all_categories_dict_rad_stal_for_all_pages.append(for_adding)
 
-
-        all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
-    with open("all_categories_dict_rad_stal_attempt_art_name_link.json", "w", encoding='utf8') as file:
-        json.dump(all_categories_dict_rad_stal, file, indent=4, ensure_ascii=False, sort_keys=False, default=str)
-    print('-----------')
+    with open('all_categories_dict_rad_stal_for_all_pages.json', 'a', encoding = 'utf-8') as file:
+        for line in all_categories_dict_rad_stal_for_all_pages:
+            file.write(f'{line}\n')
+            print('--'*10)
 
 
 
