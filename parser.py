@@ -31,12 +31,12 @@ def get_html(url, useragent = None, proxy = None):
 
 def get_ip(html):
     soup = BeautifulSoup(html, "lxml")
-    all_products_hrefs = soup.find_all("a", class_="bex6mjh_plp")
+    all_products_hrefs = soup.find_all("a", {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
 
     all_categories_dict_for_radiators_and_elther = {}
     for item in all_products_hrefs:
         item_text = item.text
-        item_href_1 = 'https://leroymerlin.ru/' + item.find_next('link').get("href")
+        item_href_1 = 'https://leroymerlin.ru/' + item.get("href")
         # print(item_href_1)
         all_categories_dict_for_radiators_and_elther[item_text] = item_href_1
 
