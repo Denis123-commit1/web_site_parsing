@@ -19,10 +19,10 @@ from random import uniform
 from datetime import datetime
 import os
 
-FILE = r'C:\Users\Dell\PycharmProjects\web_site_parsing\radiators.csv'
+FILE = 'radiators.csv'
 
 # Настраиваем несколько прокси
-def get_html(url, useragent = None, proxy = None):
+def get_html(url, useragent = None, proxy = None, params = None):
     print('get_html')
     r = requests.get(url, headers = useragent, proxies = proxy)
     return r.text
@@ -40,37 +40,34 @@ def get_pages_count(html):
 
 
 def get_ip(html):
-    soup = BeautifulSoup(html, "lxml")
-    all_products_hrefs = soup.find_all("a", {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+    print('New proxy & New UserAgent:')
+    soup = BeautifulSoup(html, 'lxml')
+    items = soup.find_all("div", class_ = "phytpj4_plp")
 
-    all_categories_dict_for_radiators_and_elther = {}
-    for item in all_products_hrefs:
-        item_text = item.text
-        item_href_1 = 'https://leroymerlin.ru/' + item.get("href")
 
     radiators = []
-    for item_href_1 in all_categories_dict_for_radiators_and_elther:
+    for item in items:
 
         print('New proxy & New UserAgent:')
-        soup = BeautifulSoup(item_href_1, 'lxml')
-        all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
-        all_categories_dict_rad_stal = {}
-        for item in all_products_hrefs:
-            item_art = re.search('\d{8}', item.text)
-            if item_art:
-                item_art.group(0)
-            item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
-            item_name = re.search(item.text[13:80], item.text)
-            item_data = datetime.now()
-            item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
-            for_adding = all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
-            radiators.append({
-                'link' : item_href,
-                'name' : item_name,
-                'date' : item_data,
-                'price': item_price,
-                'art': item_art
-            })
+        # soup = BeautifulSoup(item_href_1, 'lxml')
+        # all_products_hrefs = soup.find_all("div", class_ = "phytpj4_plp")
+        # all_categories_dict_rad_stal = {}
+        # for item in all_products_hrefs:
+        item_art = re.search('\d{8}', item.text)
+        if item_art:
+            item_art.group(0)
+        item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
+        item_name = re.search(item.text[13:80], item.text)
+        item_data = datetime.today().strftime('%Y-%m-%d-%H-%M')
+        item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
+        # for_adding = all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
+        radiators.append({
+            'link' : item_href,
+            'name' : item_name.group(0),
+            'date' : item_data,
+            'price': item_price.group(0).replace(" ",""),
+            'art': item_art.group(0)
+        })
     return radiators
 
 def save_file(items, path):
@@ -85,13 +82,13 @@ def save_file(items, path):
 
 
 def main():
-    with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
-        all_categories = json.load(file)
-
-    for item_text ,item_href_1 in all_categories.items():
-        if len(item_text) > 20:
-            url = f'{item_href_1}'
-        # url = 'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
+    # with open("all_categories_dict_for_radiators_and_elther.json", encoding="utf8") as file:
+    #     all_categories = json.load(file)
+    #
+    # for item_text ,item_href_1 in all_categories.items():
+    #     if len(item_text) > 20:
+    #         url = f'{item_href_1}'
+        url = 'https://leroymerlin.ru/catalogue/radiatory-otopleniya/'
 
         useragents = open('useragents.txt').read().split('\n')
         proxies = open('proxies.txt').read().split('\n')
@@ -103,23 +100,28 @@ def main():
             try:
                 html = get_html(url, useragent, proxy)
                 pages_count = get_pages_count(html)
-                if html.status_code == 200:
-                    radiators = []
-                    pages_count = get_pages_count(html.text)
-
-                    for page in range(1, pages_count + 1):
-                        print(f'Парсинг страницы {page} из {pages_count}...')
-                        html = get_html(url, params={'page': page})
-                        radiators.extend(get_ip(html.text))
-                    save_file(radiators, FILE)
-                    print(f'Получено {len(radiators)} автомобилей')
-                    os.startfile(FILE)
-                else:
-                    print('Error')
+                # if html.status_code == 200:
+                radiators = []
+                #
+                # for page in range(1, pages_count + 1):
+                #     print(f'Парсинг страницы {page} из {pages_count}...')
+                #     html = get_html(url, params={'page': page})
+                #     radiators.extend(get_ip(html))
+                # save_file(radiators, FILE)
+                # print(f'Получено {len(radiators)} автомобилей')
+                # else:
+                #     print('Error')
             except:
                 continue
             try:
-                get_ip(html)
+
+                for page in range(1, int(pages_count) + 1):
+                    print(f'Парсинг страницы {page} из {pages_count}...')
+                    html = get_html(url, params={'page': page})
+                    radiators.extend(get_ip(html))
+                save_file(radiators, FILE)
+                print(f'Получено {len(radiators)} автомобилей')
+                # get_ip(html)
             except AttributeError:
                 continue
 
