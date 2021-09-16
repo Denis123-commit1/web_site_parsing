@@ -31,7 +31,7 @@ def get_pages_count(html):
     soup = BeautifulSoup(html, "html.parser")
     pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
     if pagination:
-        return int(float(pagination[-1].get_text()))
+        return (re.search('\d{2}', pagination[-1].get_text()))
     else:
         return 1
 
