@@ -28,10 +28,10 @@ def get_html(url, useragent = None, proxy = None):
     return r.text
 
 def get_pages_count(html):
-    soup = BeautifulSoup(html, "lxml")
-    pagination = soup.find("a", {"class": "bex6mjh_plp", "data-qa-pagination-item" : "1"})
+    soup = BeautifulSoup(html, "html.parser")
+    pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
     if pagination:
-        print("Всего страниц:", pagination.text)
+        return int(float(pagination[-1].get_text()))
     else:
         return 1
 
@@ -117,7 +117,8 @@ def main():
                 get_ip(html)
             except AttributeError:
                 continue
-            get_pages_count(html)
+            pages_count = get_pages_count(html)
+            print(pages_count)
 
 
 
