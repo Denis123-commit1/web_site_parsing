@@ -97,9 +97,21 @@ def associated_list(html):
     items = soup.find_all("div", class_ = "title")
     catalog_list = []
     for item in items:
-        item_name = item.text.replace("\n", "")
-        catalog_list.append(item_name)
-        for
+        # item_name = item.text.replace("\n", "")
+        item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
+        catalog_list.append(item_link)
+        for url_1 in catalog_list:
+            req = requests.get(url = url_1)
+            print('Next_parser_1')
+            soup_1 = BeautifulSoup(req.text, 'lxml')
+            info_block = soup_1.find_all('a', class_ = 'bex6mjh_plp')
+            catalog_items_1 = []
+            for item_1 in info_block:
+                item_link_1 = item_1.find_next('data-qa').get('href')
+                catalog_items_1.append(item_link_1)
+            with open(f"catalog_items_1.json", "a", encoding="utf-8") as file_1:
+                json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
+                print('#'*20)
     with open(f"catalog_items.json", "a", encoding="utf-8") as file:
         json.dump(catalog_list, file, indent=4, ensure_ascii=False)
     print('-'*20)
