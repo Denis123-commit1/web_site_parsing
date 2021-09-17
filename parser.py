@@ -50,28 +50,32 @@ def get_ip(html):
 
     radiators = []
     for item in items:
-        item_art = re.search('\d{8}', item.text)
-        print(item_art)
-
-        if item_art:
-            item_art.group(0)
-        item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
-        item_name = re.search(item.text[13:80], item.text)
-        item_data = datetime.today().strftime('%Y-%m-%d-%H-%M')
-        item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
+        # item_art = re.search('\d{8}', item.text)
+        # print(item_art)
+        #
+        # if item_art:
+        #     item_art.group(0)
+        # item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
+        # item_name = re.search(item.text[13:80], item.text)
+        # item_data = datetime.today().strftime('%Y-%m-%d-%H-%M')
+        # item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
         # for_adding = all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
         radiators.append({
-            'link' : item_href,
-            'name' : item_name.group(0),
-            'date' : item_data,
-            'price': item_price.group(0).replace(" ",""),
-            'art': item_art.group(0)
+            'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
+            'name' : re.search(item.text[13:80], item.text).group(0),
+            'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
+            'price': re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text).group(0).replace(" ",""),
+            'art': re.search('\d{8}', item.text).group(0)
         })
     return radiators
+    # with open("radiatoryyyyyy.json", "w", encoding='utf8') as file:
+    #     json.dump(radiators, file, indent=4, ensure_ascii=False)
+    # print('---'*20)
+    # save_json(radiators)
 
 def save_json(name):
-    with open(f"{name}", "w", encoding='utf8') as file:
-        json.dump({name}, file, indent=4, ensure_ascii=False)
+    with open(f"{name}.json", "w", encoding='utf8') as file:
+        json.dump(f"{name}.json", file, indent=4, ensure_ascii=False)
 
 
 def load_json(name):
@@ -88,26 +92,28 @@ def save_file(items, path):
 
 
 def parse():
-    url = "https://leroymerlin.ru/catalogue/radiatory-bimetallicheskie/"
+
+    url = f'https://leroymerlin.ru/catalogue/radiatory-bimetallicheskie/'
     useragents = open('useragents.txt').read().split('\n')
     proxies = open('proxies.txt').read().split('\n')
-    # Создаем видимость что парсит человек и рандомизируем прокси и юзер агент
+    # pages_count = get_pages_count(html)
+    # html = get_html(url)
+    # html = get_html(url, useragent, proxy, params={'page': page})
+
     for i in range(4):
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
-
-        html = get_html(url, useragent, proxy)
         radiators = []
-        pages_count = int(get_pages_count(html))
-        print(pages_count)
-        for page in range(1, pages_count + 1):
+        # pages_count = get_pages_count(html)
+        html = get_html(url, useragent, proxy)
+        pages_count = get_pages_count(html)
+        for page in range(1, int(pages_count) + 1):
             print(f'Парсинг страницы {page} из {pages_count}...')
-            html = get_html(url, params={'page': page})
-            radiators.extend(get_ip(html.text))
+            # html = get_html(url, useragent, proxy, params={'page': page})
+            radiators.extend(get_ip(html))
         save_file(radiators, FILE)
         print(f'Получено {len(radiators)} материалов')
-        os.startfile(FILE)
 
 
 
