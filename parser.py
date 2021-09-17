@@ -84,7 +84,7 @@ def load_json(name):
 
 
 def save_file(items, path):
-    with open(path, 'w', newline='') as file:
+    with open(path, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
         writer.writerow(['ссылка', 'имя', 'дата', 'Цена в руб', 'артикул'])
         for item in items:
