@@ -97,8 +97,9 @@ def associated_list(html):
     items = soup.find_all("div", class_ = "title")
     catalog_list = []
     for item in items:
-        item_name = item.text
+        item_name = item.text.replace("\n", "")
         catalog_list.append(item_name)
+        for
     with open(f"catalog_items.json", "a", encoding="utf-8") as file:
         json.dump(catalog_list, file, indent=4, ensure_ascii=False)
     print('-'*20)
