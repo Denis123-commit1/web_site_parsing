@@ -91,9 +91,22 @@ def save_file(items, path):
             writer.writerow([item['link'], item['name'], item['date'], item['price'], item['art']])
 
 
+def associated_list(html):
+    print('New proxy & New UserAgent:')
+    soup = BeautifulSoup(html, 'lxml')
+    items = soup.find_all("div", class_ = "title")
+    catalog_list = []
+    for item in items:
+        item_name = item.text
+        catalog_list.append(item_name)
+    with open(f"catalog_items.json", "a", encoding="utf-8") as file:
+        json.dump(catalog_list, file, indent=4, ensure_ascii=False)
+    print('-'*20)
+
+
 def parse():
 
-    url = f'https://leroymerlin.ru/catalogue/radiatory-bimetallicheskie/'
+    url = f'https://leroymerlin.ru/catalogue/'
     useragents = open('useragents.txt').read().split('\n')
     proxies = open('proxies.txt').read().split('\n')
     # pages_count = get_pages_count(html)
@@ -107,13 +120,14 @@ def parse():
         radiators = []
         # pages_count = get_pages_count(html)
         html = get_html(url, useragent, proxy)
-        pages_count = get_pages_count(html)
-        for page in range(1, int(pages_count) + 1):
-            print(f'Парсинг страницы {page} из {pages_count}...')
-            # html = get_html(url, useragent, proxy, params={'page': page})
-            radiators.extend(get_ip(html))
-        save_file(radiators, FILE)
-        print(f'Получено {len(radiators)} материалов')
+        associated_list(html)
+        # pages_count = get_pages_count(html)
+        # for page in range(1, int(pages_count) + 1):
+        #     print(f'Парсинг страницы {page} из {pages_count}...')
+        #     # html = get_html(url, useragent, proxy, params={'page': page})
+        #     radiators.extend(get_ip(html))
+        # save_file(radiators, FILE)
+        # print(f'Получено {len(radiators)} материалов')
 
 
 
