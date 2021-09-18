@@ -103,48 +103,49 @@ def associated_list(html):
         # item_name = item.text.replace("\n", "")
         item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
         catalog_list.append(item_link)
-        for url_1 in catalog_list:
-            useragents = open('useragents.txt').read().split('\n')
-            proxies = open('proxies.txt').read().split('\n')
+    for url_1 in catalog_list:
+        useragents = open('useragents.txt').read().split('\n')
+        proxies = open('proxies.txt').read().split('\n')
 
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            radiators = []
-            # pages_count = get_pages_count(html)
-            req = get_html(url_1, useragent, proxy)
+        sleep(uniform(3, 12))
+        proxy = {'http': 'http://' + choice(proxies)}
+        useragent = {'User-Agent': choice(useragents)}
+        radiators = []
+        # pages_count = get_pages_count(html)
+        req = get_html(url_1, useragent, proxy)
+    # req = requests.get(url = url_1)
+        print('Next_parser_1')
+        soup_1 = BeautifulSoup(req, 'lxml')
+        info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+        catalog_items_1 = []
+        for item_1 in info_block:
+            item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
+            catalog_items_1.append(item_link_1)
+    with open(f"catalog_items_3.json", "a", encoding="utf-8") as file_1:
+        json.dump(list(set(catalog_items_1)), file_1, indent=4, ensure_ascii=False)
+        print('#'*20)
+        res = list(catalog_items_1)
+    for url_2 in res:
+        useragents = open('useragents.txt').read().split('\n')
+        proxies = open('proxies.txt').read().split('\n')
+
+        sleep(uniform(3, 12))
+        proxy = {'http': 'http://' + choice(proxies)}
+        useragent = {'User-Agent': choice(useragents)}
+        radiators = []
+        # pages_count = get_pages_count(html)
+        req_1 = get_html(url_2, useragent, proxy)
         # req = requests.get(url = url_1)
-            print('Next_parser_1')
-            soup_1 = BeautifulSoup(req, 'lxml')
-            info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-            catalog_items_1 = []
-            for item_1 in info_block:
-                item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
-                catalog_items_1.append(item_link_1)
-        # with open(f"catalog_items_1.json", "a", encoding="utf-8") as file_1:
-        #     json.dump(list(set(catalog_items_1)), file_1, indent=4, ensure_ascii=False)
-            print('#'*20)
-            for url_2 in catalog_items_1:
-                useragents = open('useragents.txt').read().split('\n')
-                proxies = open('proxies.txt').read().split('\n')
-
-                sleep(uniform(3, 12))
-                proxy = {'http': 'http://' + choice(proxies)}
-                useragent = {'User-Agent': choice(useragents)}
-                radiators = []
-                # pages_count = get_pages_count(html)
-                req_1 = get_html(url_2, useragent, proxy)
-                # req = requests.get(url = url_1)
-                print('Next_parser_2')
-                soup_2 = BeautifulSoup(req_1, 'lxml')
-                info_block_1 = soup_2.find_all("a", {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-                catalog_items_2 = []
-                for item_2 in info_block_1:
-                    item_link_2 = 'https://leroymerlin.ru' + item_2.get('href')
-                    catalog_items_2.append(item_link_2)
-                with open(f"catalog_items_2.json", "a", encoding="utf-8") as file_2:
-                    json.dump(list(set(catalog_items_2)), file_2, indent=4, ensure_ascii=False)
-                print('&' * 20)
+        print('Next_parser_2')
+        soup_2 = BeautifulSoup(req_1, 'lxml')
+        info_block_1 = soup_2.find_all("a", {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+        catalog_items_2 = []
+        for item_2 in info_block_1:
+            item_link_2 = 'https://leroymerlin.ru' + item_2.get('href')
+            catalog_items_2.append(item_link_2)
+        with open(f"catalog_items_2.json", "a", encoding="utf-8") as file_2:
+            json.dump(catalog_items_2, file_2, indent=4, ensure_ascii=False)
+        print('&' * 20)
 
 
 def parse():
@@ -182,3 +183,23 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+
+# lst = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+# lst_1 = [[1,1], [2,2], [3,3]]
+# res = sum(lst, [])
+# print(res)
+# for i in lst:
+#     for i_1 in lst_1:
+#         print()
+# from itertools import groupby
+# lst = [[1,2,3],[1,4,5],[2,6,7]]
+# new_lst = list(set(sum(lst, [])))
+# # new_x = [el for el, _ in groupby(lst)]
+# print(new_lst)
+
+
+st = list(set(['1', '2', '3', '4', '5']))
+print(st[4])
