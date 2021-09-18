@@ -118,9 +118,9 @@ def associated_list(html):
             for item_1 in info_block:
                 item_link_1 = item_1.get('href')
                 catalog_items_1.append(item_link_1)
-            with open(f"catalog_items_1.json", "a", encoding="utf-8") as file_1:
-                json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
-                print('#'*20)
+        with open(f"catalog_items_1.json", "a", encoding="utf-8") as file_1:
+            json.dump(list(set(catalog_items_1)), file_1, indent=4, ensure_ascii=False)
+            print('#'*20)
     # with open(f"catalog_items.json", "a", encoding="utf-8") as file:
     #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
     print('-'*20)
