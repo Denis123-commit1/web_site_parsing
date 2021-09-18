@@ -92,60 +92,62 @@ def save_file(items, path):
 
 
 def associated_list(html):
-    print('New proxy & New UserAgent:')
-    soup = BeautifulSoup(html, 'lxml')
-    items = soup.find_all("div", class_ = "title")
-    catalog_list = []
-    # with open(f"catalog_items.json", "a", encoding="utf-8") as file:
-    #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
-    print('-'*20)
-    for item in items:
-        # item_name = item.text.replace("\n", "")
-        item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
-        catalog_list.append(item_link)
-    for url_1 in catalog_list:
-        useragents = open('useragents.txt').read().split('\n')
-        proxies = open('proxies.txt').read().split('\n')
+    # print('New proxy & New UserAgent:')
+    # soup = BeautifulSoup(html, 'lxml')
+    # items = soup.find_all("div", class_ = "title")
+    # catalog_list = []
+    # # with open(f"catalog_items.json", "a", encoding="utf-8") as file:
+    # #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
+    # print('-'*20)
+    # for item in items:
+    #     # item_name = item.text.replace("\n", "")
+    #     item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
+    #     catalog_list.append(item_link)
+    # with open(f"catalog_items.json", encoding="utf8") as file:
+    #     catalog_list = json.load(file)
+    # for url_1 in catalog_list:
+    #     useragents = open('useragents.txt').read().split('\n')
+    #     proxies = open('proxies.txt').read().split('\n')
+    #
+    #     sleep(uniform(3, 12))
+    #     proxy = {'http': 'http://' + choice(proxies)}
+    #     useragent = {'User-Agent': choice(useragents)}
+    #     req = get_html(url_1, useragent, proxy)
+    #     print('Next_parser_1')
+    #     soup_1 = BeautifulSoup(req, 'lxml')
+    #     info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+    #     catalog_items_1 = []
+    #     for item_1 in info_block:
+    #         item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
+    #         catalog_items_1.append(item_link_1)
+    #     with open(f"catalog_items_3.json", "a", encoding="utf-8") as file_1:
+    #         json.dump(list(set(catalog_items_1)), file_1, indent=4, ensure_ascii=False)
+    #         print('#'*20)
 
-        sleep(uniform(3, 12))
-        proxy = {'http': 'http://' + choice(proxies)}
-        useragent = {'User-Agent': choice(useragents)}
-        radiators = []
-        # pages_count = get_pages_count(html)
-        req = get_html(url_1, useragent, proxy)
-    # req = requests.get(url = url_1)
-        print('Next_parser_1')
-        soup_1 = BeautifulSoup(req, 'lxml')
-        info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-        catalog_items_1 = []
-        for item_1 in info_block:
-            item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
-            catalog_items_1.append(item_link_1)
-    with open(f"catalog_items_3.json", "a", encoding="utf-8") as file_1:
-        json.dump(list(set(catalog_items_1)), file_1, indent=4, ensure_ascii=False)
-        print('#'*20)
-        res = list(catalog_items_1)
-    for url_2 in res:
-        useragents = open('useragents.txt').read().split('\n')
-        proxies = open('proxies.txt').read().split('\n')
 
-        sleep(uniform(3, 12))
-        proxy = {'http': 'http://' + choice(proxies)}
-        useragent = {'User-Agent': choice(useragents)}
-        radiators = []
-        # pages_count = get_pages_count(html)
-        req_1 = get_html(url_2, useragent, proxy)
-        # req = requests.get(url = url_1)
-        print('Next_parser_2')
-        soup_2 = BeautifulSoup(req_1, 'lxml')
-        info_block_1 = soup_2.find_all("a", {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-        catalog_items_2 = []
-        for item_2 in info_block_1:
-            item_link_2 = 'https://leroymerlin.ru' + item_2.get('href')
-            catalog_items_2.append(item_link_2)
-        with open(f"catalog_items_2.json", "a", encoding="utf-8") as file_2:
-            json.dump(catalog_items_2, file_2, indent=4, ensure_ascii=False)
-        print('&' * 20)
+
+        # res = list(catalog_items_1)
+    # for url_2 in res:
+    #     useragents = open('useragents.txt').read().split('\n')
+    #     proxies = open('proxies.txt').read().split('\n')
+    #
+    #     sleep(uniform(3, 12))
+    #     proxy = {'http': 'http://' + choice(proxies)}
+    #     useragent = {'User-Agent': choice(useragents)}
+    #     radiators = []
+    #     # pages_count = get_pages_count(html)
+    #     req_1 = get_html(url_2, useragent, proxy)
+    #     # req = requests.get(url = url_1)
+    #     print('Next_parser_2')
+    #     soup_2 = BeautifulSoup(req_1, 'lxml')
+    #     info_block_1 = soup_2.find_all("a", {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+    #     catalog_items_2 = []
+    #     for item_2 in info_block_1:
+    #         item_link_2 = 'https://leroymerlin.ru' + item_2.get('href')
+    #         catalog_items_2.append(item_link_2)
+    #     with open(f"catalog_items_2.json", "a", encoding="utf-8") as file_2:
+    #         json.dump(catalog_items_2, file_2, indent=4, ensure_ascii=False)
+    #     print('&' * 20)
 
 
 def parse():
