@@ -103,24 +103,24 @@ def associated_list(html):
         for url_1 in catalog_list:
             useragents = open('useragents.txt').read().split('\n')
             proxies = open('proxies.txt').read().split('\n')
-            for i in range(4):
-                sleep(uniform(3, 12))
-                proxy = {'http': 'http://' + choice(proxies)}
-                useragent = {'User-Agent': choice(useragents)}
-                radiators = []
-                # pages_count = get_pages_count(html)
-                req = get_html(url_1, useragent, proxy)
-            # req = requests.get(url = url_1)
-                print('Next_parser_1')
-                soup_1 = BeautifulSoup(req, 'lxml')
-                info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-                catalog_items_1 = []
-                for item_1 in info_block:
-                    item_link_1 = item_1.get('href')
-                    catalog_items_1.append(item_link_1)
-                with open(f"catalog_items_1.json", "a", encoding="utf-8") as file_1:
-                    json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
-                    print('#'*20)
+
+            sleep(uniform(3, 12))
+            proxy = {'http': 'http://' + choice(proxies)}
+            useragent = {'User-Agent': choice(useragents)}
+            radiators = []
+            # pages_count = get_pages_count(html)
+            req = get_html(url_1, useragent, proxy)
+        # req = requests.get(url = url_1)
+            print('Next_parser_1')
+            soup_1 = BeautifulSoup(req, 'lxml')
+            info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+            catalog_items_1 = []
+            for item_1 in info_block:
+                item_link_1 = item_1.get('href')
+                catalog_items_1.append(item_link_1)
+            with open(f"catalog_items_1.json", "a", encoding="utf-8") as file_1:
+                json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
+                print('#'*20)
     # with open(f"catalog_items.json", "a", encoding="utf-8") as file:
     #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
     print('-'*20)
