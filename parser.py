@@ -112,29 +112,32 @@ def associated_list(html):
 
 
         # catalog_items_1 = {}
-        for url_1 in catalog_list:
-            useragents = open('useragents.txt').read().split('\n')
-            proxies = open('proxies.txt').read().split('\n')
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            req = get_html(url_1, useragent, proxy)
-            print('Next_parser_1')
-            soup_1 = BeautifulSoup(req, 'lxml')
-            info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-            catalog_items_1 = ''
-            for item_1 in info_block:
-                item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
-                catalog_items_1 = item_link_1
+        # for url_1 in catalog_list:
+        #     useragents = open('useragents.txt').read().split('\n')
+        #     proxies = open('proxies.txt').read().split('\n')
+        #     sleep(uniform(3, 12))
+        #     proxy = {'http': 'http://' + choice(proxies)}
+        #     useragent = {'User-Agent': choice(useragents)}
+        #     req = get_html(url_1, useragent, proxy)
+        #     print('Next_parser_1')
+        #     soup_1 = BeautifulSoup(req, 'lxml')
+        #     info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+        #     catalog_items_1 = ''
+        #     for item_1 in info_block:
+        #         item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
+        #         catalog_items_1 = item_link_1 + ","
+        #
+        #
+        #
+        #         # listmerge6 = lambda s: list(reduce(lambda d, el: d.extend(el) or d, s, []))
+        #
+        #         with open("catalog_items_6.json", "a", encoding="utf-8") as file_1:
+        #             json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
+        #             print('#'*20)
+        #
 
-                # listmerge6 = lambda s: list(reduce(lambda d, el: d.extend(el) or d, s, []))
-
-            with open("catalog_items_6.json", "a", encoding="utf-8") as file_1:
-                json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
-                print('#'*20)
-
-    # with open("catalog_items_3.json", encoding="utf8") as file:
-    #     catalog_items_6 = json.loads(file)
+with open("catalog_items_6.json", encoding="utf8") as file:
+    catalog_items_6 = json.load(file)
     # with open('catalog_items_6.json') as f:
     #     catalog_items_6 = json.loads("[" + f"{f}" + "]")
 
