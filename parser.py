@@ -144,6 +144,7 @@ def associated_list(html):
 
         valuesList = list(result.values())
         print(valuesList)
+
         # print({k: v for d in data for k, v in d.items()})
         # x = []
         # x.append(data)
