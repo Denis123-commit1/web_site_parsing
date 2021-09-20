@@ -107,38 +107,53 @@ def associated_list(html):
     #
     #
 
-        # with open(f"catalog_items.json", encoding="utf8") as file:
-        #     catalog_list = json.load(file)
-        # for url_1 in catalog_list:
-        #     useragents = open('useragents.txt').read().split('\n')
-        #     proxies = open('proxies.txt').read().split('\n')
-        #     sleep(uniform(3, 12))
-        #     proxy = {'http': 'http://' + choice(proxies)}
-        #     useragent = {'User-Agent': choice(useragents)}
-        #     req = get_html(url_1, useragent, proxy)
-        #     print('Next_parser_1')
-        #     soup_1 = BeautifulSoup(req, 'lxml')
-        #     info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-        #     catalog_items_1 = {}
-        #     for i,item_1 in enumerate(info_block):
-        #         item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
-        #         catalog_items_1[i] = item_link_1
-        #     with open("catalog_items_6.json", "a", encoding="utf-8") as file_1:
-        #         json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
-        #         print('#'*20)
+        with open(f"catalog_items.json", encoding="utf8") as file:
+            catalog_list = json.load(file)
+        for k, url_1 in enumerate(catalog_list):
+            useragents = open('useragents.txt').read().split('\n')
+            proxies = open('proxies.txt').read().split('\n')
+            sleep(uniform(3, 12))
+            proxy = {'http': 'http://' + choice(proxies)}
+            useragent = {'User-Agent': choice(useragents)}
+            req = get_html(url_1, useragent, proxy)
+            print('Next_parser_1')
+            soup_1 = BeautifulSoup(req, 'lxml')
+            info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+            catalog_items_1 = {}
+            for i,item_1 in enumerate(info_block):
+                item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
+                catalog_items_1[f"{k, i}"] = item_link_1
+            with open("catalog_items_7.json", "a", encoding="utf-8") as file_1:
+                json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
+                print('#'*20)
 
 
-    # with open("catalog_items_6.json", encoding="utf8") as file:
-    #     catalog_items_6 = json.load("[" + file + "]")
+        # with open('catalog_items_6.json') as f:
+        #     data = json.loads("[" +
+        #                       f.read().replace("\n}{", "\n},{") +
+        #                       "]")
 
-    with open('catalog_items_6.json') as f:
-        data = json.loads("[" +
-                          f.read().replace("\n}{", "\n},{") +
-                          "]")
+            # print(data)
 
-        print(data)
 
-    # with open(f'catalog_items_6.json') as f:
+        # result = {}
+        # for d in data.values():
+        #     result.update(d)
+        # print(result)
+
+
+        # print({k: v for d in data for k, v in d.items()})
+        # x = []
+        # x.append(data)
+        # print(x)
+        # print(*{x.keys: x.items() for x in data}.values(), sep='\n')
+
+
+        # new = map(dict, set(tuple(sorted(e.items())) for e in data))
+        # print(*new)
+
+
+# with open(f'catalog_items_6.json') as f:
     #     catalog_items_6 = json.loads(f.readline(delimiter = "\n"))
 
     # with open("catalog_items_5.json", encoding="utf8") as file:
@@ -229,7 +244,17 @@ if __name__ == '__main__':
 # print(st[4])
 
 
-lst = [1, 2]
-lst_1 = [3,4]
-lst_2 = lst + lst_1
-print(lst_2)
+# lst = [1, 2]
+# lst_1 = [3,4]
+# lst_2 = lst + lst_1
+# print(lst_2)
+
+# dic = {'s' : 1}
+# print(dic.keys())
+
+# dict_list = [{'a': 1, 'b': 2}, {'a': 3}]
+# result = {}
+# for d in dict_list:
+#   result.update(d)
+#
+# print(result)
