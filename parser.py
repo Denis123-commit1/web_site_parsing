@@ -96,20 +96,18 @@ def associated_list(html):
     # soup = BeautifulSoup(html, 'lxml')
     # items = soup.find_all("div", class_ = "title")
     # catalog_list = []
-    # # with open(f"catalog_items.json", "a", encoding="utf-8") as file:
-    # #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
-    # print('-'*20)
     # for item in items:
-    #     # item_name = item.text.replace("\n", "")
     #     item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
     #     catalog_list.append(item_link)
-    #
-    #
-    #
+    # # with open(f"catalog_items.json.json", "a", encoding="utf-8") as file:
+    # #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
+    # # print('-' * 20)
 
+
+        #
         # with open(f"catalog_items.json", encoding="utf8") as file:
-        #     catalog_list = json.load(file)
-        # for k, url_1 in enumerate(catalog_list):
+        #     catalog_items = json.load(file)
+        # for k, url_1 in enumerate(catalog_items):
         #     useragents = open('useragents.txt').read().split('\n')
         #     proxies = open('proxies.txt').read().split('\n')
         #     sleep(uniform(3, 12))
@@ -123,37 +121,27 @@ def associated_list(html):
         #     for i,item_1 in enumerate(info_block):
         #         item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
         #         catalog_items_1[f"{k, i}"] = item_link_1
-        #     with open("catalog_items_7.json", "a", encoding="utf-8") as file_1:
+        #         if k == 15:
+        #             break
+        #     with open("catalog_items_1.json", "a", encoding="utf-8") as file_1:
         #         json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
         #         print('#'*20)
 
-
-        with open('catalog_items_7.json') as f:
+        with open('catalog_items_1.json') as f:
             data = json.loads("[" +
                               f.read().replace("\n}{", "\n},{") +
                               "]")
-
-            # print(data)
-
-
+        # print(data)
         result = {}
         for d in data:
             result.update(d)
         # print(result)
-
-
         valuesList = list(result.values())
-        print(valuesList)
+        # print(valuesList)
+        with open(f"catalog_items_1_1.json.json", "a", encoding="utf-8") as file:
+            json.dump(valuesList, file, indent=4, ensure_ascii=False)
+        print('-' * 20)
 
-        # print({k: v for d in data for k, v in d.items()})
-        # x = []
-        # x.append(data)
-        # print(x)
-        # print(*{x.keys: x.items() for x in data}.values(), sep='\n')
-
-
-        # new = map(dict, set(tuple(sorted(e.items())) for e in data))
-        # print(*new)
 
 
 # with open(f'catalog_items_6.json') as f:
