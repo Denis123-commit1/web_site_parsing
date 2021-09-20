@@ -30,7 +30,7 @@ def get_html(url, useragent = None, proxy = None, params = None):
 
 def get_pages_count(html):
     soup = BeautifulSoup(html, "lxml")
-    pagination = soup.find_all("a", {"class" : "bex6mjh_plp", "aria-current":"page"})
+    pagination = soup.find_all("a", {"class" : "bex6mjh_plp", "data-qa-pagination-item":""})
 
     if pagination:
         # pagination_1 = print(re.search((pagination[-1].get_text())))
