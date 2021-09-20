@@ -20,7 +20,7 @@ from datetime import datetime
 import os
 from itertools import groupby
 
-FILE = 'radiators.csv'
+FILE = 'radiators_checking.csv'
 
 # Настраиваем несколько прокси
 def get_html(url, useragent = None, proxy = None, params = None):
@@ -47,41 +47,20 @@ def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
     items = soup.find_all("div", class_ = "phytpj4_plp")
-
-
     radiators = []
     for item in items:
-        # item_art = re.search('\d{8}', item.text)
-        # print(item_art)
-        #
-        # if item_art:
-        #     item_art.group(0)
-        # item_href = 'https://leroymerlin.ru' + item.find_next('a').get('href')
-        # item_name = re.search(item.text[13:80], item.text)
-        # item_data = datetime.today().strftime('%Y-%m-%d-%H-%M')
-        # item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
-        # for_adding = all_categories_dict_rad_stal[item_art.group(0)] = item_name.group(0), item_href, item_data, item_price.group(0).replace(" ","")
+        item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
+        item_art = re.search('\d{8}', item.text)
+        # print(item.text)
         radiators.append({
             'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
-            'name' : re.search(item.text[13:80], item.text).group(0),
+            'name' : re.search(re.search(item.text[item_art.end():item_price.start()], item.text).group(0), item.text).group(0),
             'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
             'price': re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text).group(0).replace(" ",""),
             'art': re.search('\d{8}', item.text).group(0)
         })
     return radiators
-    # with open("radiatoryyyyyy.json", "w", encoding='utf8') as file:
-    #     json.dump(radiators, file, indent=4, ensure_ascii=False)
-    # print('---'*20)
-    # save_json(radiators)
 
-def save_json(name):
-    with open(f"{name}.json", "w", encoding='utf8') as file:
-        json.dump(f"{name}.json", file, indent=4, ensure_ascii=False)
-
-
-def load_json(name):
-    with open(f"{name}", encoding="utf8") as file:
-        name = json.load(file)
 
 
 def save_file(items, path):
@@ -199,27 +178,28 @@ def associated_list(html):
 
 def parse():
 
-    url = f'https://leroymerlin.ru/catalogue/'
+
+    url = r'https://leroymerlin.ru/catalogue/radiatory-bimetallicheskie/'
     useragents = open('useragents.txt').read().split('\n')
     proxies = open('proxies.txt').read().split('\n')
-    pages_count = get_pages_count(html)
+    # pages_count = get_pages_count(html)
     # html = get_html(url)
-    html = get_html(url, useragent, proxy, params={'page': page})
+    # html = get_html(url, useragent, proxy, params={'page': page})
 
     for i in range(4):
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
-        materials = []
+        radiators = []
         html = get_html(url, useragent, proxy)
-        # associated_list(html)
         pages_count = get_pages_count(html)
         for page in range(1, int(pages_count) + 1):
             print(f'Парсинг страницы {page} из {pages_count}...')
             # html = get_html(url, useragent, proxy, params={'page': page})
-            materials.extend(get_ip(html))
-        save_file(materials, FILE)
-        print(f'Получено {len(materials)} материалов')
+            radiators.extend(get_ip(html))
+        save_file(radiators, FILE)
+        print(f'Получено {len(radiators)} материалов')
+
 
 
 def main():
