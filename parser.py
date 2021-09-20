@@ -30,11 +30,11 @@ def get_html(url, useragent = None, proxy = None, params = None):
 
 def get_pages_count(html):
     soup = BeautifulSoup(html, "lxml")
-    pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
+    pagination = soup.find_all("a", {"class" : "bex6mjh_plp", "aria-current":"page"})
 
     if pagination:
-        # pagination_1 = print(re.search('\d', (pagination[-1].get_text())))
-        pagination_1 = re.search('\d', pagination[-1].get_text()).group(0)
+        # pagination_1 = print(re.search((pagination[-1].get_text())))
+        pagination_1 = int(re.search('\d+', pagination[-1].get_text()).group(0))
         return pagination_1
     else:
         return 1
@@ -177,33 +177,33 @@ def associated_list(html):
 
 
 def parse():
-    with open(f"catalog_items_1_1_1_1.json", encoding="utf8") as file:
-        catalog_items_1_1_1_1 = json.load(file)
-    for k, url in enumerate(catalog_items_1_1_1_1):
+    # with open(f"catalog_items_1_1_1_1.json", encoding="utf8") as file:
+    #     catalog_items_1_1_1_1 = json.load(file)
+    # for k, url in enumerate(catalog_items_1_1_1_1):
 
-        # url = r'https://leroymerlin.ru/catalogue/radiatory-bimetallicheskie/'
+        url = r'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/'
         useragents = open('useragents.txt').read().split('\n')
         proxies = open('proxies.txt').read().split('\n')
         # pages_count = get_pages_count(html)
         # html = get_html(url)
         # html = get_html(url, useragent, proxy, params={'page': page})
 
-        for i in range(4):
+        # for i in range(4):
+        sleep(uniform(3, 12))
+        proxy = {'http': 'http://' + choice(proxies)}
+        useragent = {'User-Agent': choice(useragents)}
+        materials = []
+        html = get_html(url, useragent, proxy)
+        pages_count = get_pages_count(html)
+        for page in range(1, int(pages_count) + 1):
             sleep(uniform(3, 12))
             proxy = {'http': 'http://' + choice(proxies)}
             useragent = {'User-Agent': choice(useragents)}
-            materials = []
             html = get_html(url, useragent, proxy)
-            pages_count = get_pages_count(html)
-            for page in range(1, int(pages_count) + 1):
-                sleep(uniform(3, 12))
-                proxy = {'http': 'http://' + choice(proxies)}
-                useragent = {'User-Agent': choice(useragents)}
-                html = get_html(url, useragent, proxy)
-                print(f'Парсинг страницы {page} из {pages_count}...')
-                materials.extend(get_ip(html))
-            save_file(materials, FILE)
-            print(f'Получено {len(materials)} материалов')
+            print(f'Парсинг страницы {page} из {pages_count}...')
+            materials.extend(get_ip(html))
+        save_file(materials, FILE)
+        print(f'Получено {len(materials)} материалов')
 
 
 
