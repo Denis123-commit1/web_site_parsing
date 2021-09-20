@@ -91,8 +91,10 @@ def save_file(items, path):
         for item in items:
             writer.writerow([item['link'], item['name'], item['date'], item['price'], item['art']])
 
-
+# функция для создания списков (уже создали)
 def associated_list(html):
+    pass
+    # Создаем список с категориями
     # print('New proxy & New UserAgent:')
     # soup = BeautifulSoup(html, 'lxml')
     # items = soup.find_all("div", class_ = "title")
@@ -105,7 +107,7 @@ def associated_list(html):
     # # print('-' * 20)
 
 
-
+        # Создаем список с подкатегориями
         # with open(f"catalog_items.json", encoding="utf8") as file:
         #     catalog_items = json.load(file)
         # for k, url_1 in enumerate(catalog_items):
@@ -138,8 +140,6 @@ def associated_list(html):
         #     result.update(d)
         # print(result)
         # valuesList = list(result.values())
-
-
         # def unique(obj: iter):
         #     args = []
         #     for a in obj:
@@ -151,6 +151,7 @@ def associated_list(html):
         #     json.dump([*new_valuesList], file, indent=4, ensure_ascii=False)
         # print('-' * 20)
 
+    # Создаем список с подкатегориями подкатегорий
     # with open("catalog_items_1_1.json", encoding="utf8") as file:
     #     catalog_items_1_1 = json.load(file)
     # for k_1, url_2 in enumerate(catalog_items_1_1):
@@ -173,53 +174,27 @@ def associated_list(html):
     #         json.dump(catalog_items_1_1_1, file_1, indent=4, ensure_ascii=False)
     #         print('&'*20)
 
-    with open('catalog_items_1_1_1.json') as f:
-        data_1 = json.loads("[" +
-                          f.read().replace("\n}{", "\n},{") +
-                          "]")
-    # print(data)
-    result_1 = {}
-    for d_1 in data_1:
-        result_1.update(d_1)
-    # print(result_1)
-    valuesList_1 = list(result_1.values())
-    def unique(obj: iter):
-        args = []
-        for a in obj:
-            if a not in args:
-                args.append(a)
-                yield a
-    new_valuesList_1 = unique(valuesList_1)
-    with open(f"catalog_items_1_1_1_1.json", "a", encoding="utf-8") as file:
-        json.dump([*new_valuesList_1], file, indent=4, ensure_ascii=False)
-    print('-' * 20)
+    # with open('catalog_items_1_1_1.json') as f:
+    #     data_1 = json.loads("[" +
+    #                       f.read().replace("\n}{", "\n},{") +
+    #                       "]")
+    # # print(data)
+    # result_1 = {}
+    # for d_1 in data_1:
+    #     result_1.update(d_1)
+    # # print(result_1)
+    # valuesList_1 = list(result_1.values())
+    # def unique(obj: iter):
+    #     args = []
+    #     for a in obj:
+    #         if a not in args:
+    #             args.append(a)
+    #             yield a
+    # new_valuesList_1 = unique(valuesList_1)
+    # with open(f"catalog_items_1_1_1_1.json", "a", encoding="utf-8") as file:
+    #     json.dump([*new_valuesList_1], file, indent=4, ensure_ascii=False)
+    # print('-' * 20)
 
-
-# with open(f'catalog_items_6.json') as f:
-    #     catalog_items_6 = json.loads(f.readline(delimiter = "\n"))
-
-    # with open("catalog_items_5.json", encoding="utf8") as file:
-    #     catalog_items_5 = json.loads(file)
-    # res = sum(catalog_items_5, [])
-    # for url_2 in res:
-    #     useragents = open('useragents.txt').read().split('\n')
-    #     proxies = open('proxies.txt').read().split('\n')
-    #
-    #     sleep(uniform(3, 12))
-    #     proxy = {'http': 'http://' + choice(proxies)}
-    #     useragent = {'User-Agent': choice(useragents)}
-    #     req_1 = get_html(url_2, useragent, proxy)
-    #     # req = requests.get(url = url_1)
-    #     print('Next_parser_2')
-    #     soup_2 = BeautifulSoup(req_1, 'lxml')
-    #     info_block_1 = soup_2.find_all("a", {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-    #     catalog_items_2 = []
-    #     for item_2 in info_block_1:
-    #         item_link_2 = 'https://leroymerlin.ru' + item_2.get('href')
-    #         catalog_items_2 += item_link_2
-    #     with open(f"catalog_items_4.json", "a", encoding="utf-8") as file_2:
-    #         json.dump(catalog_items_2, file_2, indent=4, ensure_ascii=False)
-    #     print('&' * 20)
 
 
 def parse():
@@ -227,33 +202,24 @@ def parse():
     url = f'https://leroymerlin.ru/catalogue/'
     useragents = open('useragents.txt').read().split('\n')
     proxies = open('proxies.txt').read().split('\n')
-    # pages_count = get_pages_count(html)
+    pages_count = get_pages_count(html)
     # html = get_html(url)
-    # html = get_html(url, useragent, proxy, params={'page': page})
+    html = get_html(url, useragent, proxy, params={'page': page})
 
     for i in range(4):
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
-        radiators = []
-        # pages_count = get_pages_count(html)
+        materials = []
         html = get_html(url, useragent, proxy)
-        associated_list(html)
-        # pages_count = get_pages_count(html)
-        # for page in range(1, int(pages_count) + 1):
-        #     print(f'Парсинг страницы {page} из {pages_count}...')
-        #     # html = get_html(url, useragent, proxy, params={'page': page})
-        #     radiators.extend(get_ip(html))
-        # save_file(radiators, FILE)
-        # print(f'Получено {len(radiators)} материалов')
-
-def listmerge2(catalog):
-    all = []
-    for lst in catalog:
-        all = all + lst
-    with open(f"catalog_items_5.json", "a", encoding="utf-8") as file_2:
-        json.dump(all, file_2, indent=4, ensure_ascii=False)
-    print('&' * 20)
+        # associated_list(html)
+        pages_count = get_pages_count(html)
+        for page in range(1, int(pages_count) + 1):
+            print(f'Парсинг страницы {page} из {pages_count}...')
+            # html = get_html(url, useragent, proxy, params={'page': page})
+            materials.extend(get_ip(html))
+        save_file(materials, FILE)
+        print(f'Получено {len(materials)} материалов')
 
 
 def main():
