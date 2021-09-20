@@ -30,15 +30,14 @@ def get_html(url, useragent = None, proxy = None, params = None):
 
 def get_pages_count(html):
     soup = BeautifulSoup(html, "lxml")
-    pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
-
+    pagination = soup.find_all("a", {"class": "bex6mjh_plp", "data-qa-pagination-active":"false"})
     if pagination:
         pagination_1 = []
         for item in pagination:
         # pagination_1 = print(re.search('\d', (pagination[-1].get_text())))
-            item_obj = re.search('\d', item.get_text())
+            item_obj = int(re.search("\d+", item.get('href')).group(0))
             pagination_1.append(item_obj)
-        return pagination_1[-1].group(0)
+        return pagination_1[-1]
     else:
         return 1
     # pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
@@ -196,7 +195,7 @@ def parse():
     #     catalog_items_1_1_1_1 = json.load(file)
     # for k, url in enumerate(catalog_items_1_1_1_1):
 
-        url = r'https://leroymerlin.ru/catalogue/radiatory-bimetallicheskie/'
+        url = r'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/'
         useragents = open('useragents.txt').read().split('\n')
         proxies = open('proxies.txt').read().split('\n')
         # pages_count = get_pages_count(html)
