@@ -220,6 +220,9 @@ def parse():
 # def carry_over_table(table): # для переноса данных по значению
 #     pass
 
+# распараллелить процессы
+#
+
 
 def main():
     parse()
