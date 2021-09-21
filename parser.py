@@ -26,17 +26,16 @@ def get_html(url, useragent = None, proxy = None, params = None):
 
 def get_pages_count(html):
     soup = BeautifulSoup(html, "lxml")
-    pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
-
+    pagination = soup.find_all("a", {"class": "bex6mjh_plp", "data-qa-pagination-active":"false"})
     if pagination:
         pagination_1 = []
         for item in pagination:
-            # pagination_1 = print(re.search('\d', (pagination[-1].get_text())))
-            item_obj = re.search('\d', item.find_next('a').get('href'))
-            pagination_1.append(item_obj.group(0))
-        return int(max(pagination_1))
+        # pagination_1 = print(re.search('\d', (pagination[-1].get_text())))
+            item_obj = int(re.search("\d+", item.get('href')).group(0))
+            pagination_1.append(item_obj)
+        return pagination_1[-1] + 10
     else:
-        return 1
+        return 1 + 10
     # pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
     # pagination_2 = []
     # if pagination:
@@ -63,13 +62,16 @@ def get_ip(html):
         item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
         item_art = re.search('\d{8}', item.text)
         # print(item.text)
-        radiators.append({
-            'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
-            # 'name' : re.search(re.search(item.text[item_art.end():item_price.start()], item.text).group(0), item.text).group(0),
-            'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
-            'price': re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text).group(0).replace(" ",""),
-            'art': re.search('\d{8}', item.text).group(0)
-        })
+        try:
+            radiators.append({
+                'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
+                'name' : re.search(re.search(item.text[item_art.end():item_price.start()], item.text).group(0), item.text).group(0),
+                'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
+                'price': re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text).group(0).replace(" ",""),
+                'art': re.search('\d{8}', item.text).group(0)
+            })
+        except AttributeError:
+            print('Имя не найдено')
     return radiators
 
 
@@ -191,8 +193,9 @@ def parse():
     # with open(f"catalog_items_1_1.json", encoding="utf8") as file:
     #     catalog_items_1_1_1_1 = json.load(file)
     # for k, url in enumerate(catalog_items_1_1_1_1):
-
-        url = r'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/'
+    for page in range(0, 20, 1):
+        print(page)
+        url = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={page}'
         useragents = open('useragents.txt').read().split('\n')
         proxies = open('proxies.txt').read().split('\n')
         # pages_count = get_pages_count(html)
@@ -205,14 +208,19 @@ def parse():
         useragent = {'User-Agent': choice(useragents)}
         materials = []
         html = get_html(url, useragent, proxy)
-        pages_count = get_pages_count(html)
-        for page in range(1, int(pages_count) + 1):
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            html = get_html(url, useragent, proxy)
-            print(f'Парсинг страницы {page} из {pages_count}...')
-            materials.extend(get_ip(html))
+        if get_html(url[page - 1],useragent,proxy) == (url[page],useragent,proxy):
+            break
+        # for i in range(1, len(items)):
+        #     a, b = items[i - 1], items[i]
+        #     if a < b:
+        #         print('{} < {}'.format(a, b))
+        # pages_count = get_pages_count(html)
+        # for page in range(1, int(pages_count) + 1):
+        sleep(uniform(3, 12))
+        proxy = {'http': 'http://' + choice(proxies)}
+        useragent = {'User-Agent': choice(useragents)}
+        # print(f'Парсинг страницы {page} из {pages_count}...')
+        materials.extend(get_ip(html))
         save_file(materials, FILE)
         print(f'Получено {len(materials)} материалов')
 
