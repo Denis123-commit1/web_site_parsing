@@ -33,10 +33,6 @@ def get_ip(html):
     for item in items:
         item_price = re.search('\d+\s₽/шт', item.text)
         item_art = re.search('\d{8}', item.text)
-        replace_val = [('(', '\('), (')', '\)')]
-        # item_name = re.search(item.text[item_art.end():item_price.start()], item.text)
-        # item_name_1 = item_name.group(0)
-        # item_name_2 = f"{replace(item_name_1, replace_val)}"
         try:
             radiators.append({
                 'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
@@ -183,9 +179,6 @@ def parse():
     for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
         for k_3 ,page in enumerate(range(1, 20, 1)):
-        # with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
-        #     catalog_items_1_1_1_1_1 = json.load(file)
-        # for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_1):
             print(page)
             url = f'{url_for_inserting}{page}'
             url_last = f'{url_for_inserting}{page -1}'
