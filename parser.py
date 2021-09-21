@@ -193,28 +193,18 @@ def parse():
     # with open(f"catalog_items_1_1.json", encoding="utf8") as file:
     #     catalog_items_1_1_1_1 = json.load(file)
     # for k, url in enumerate(catalog_items_1_1_1_1):
+    materials = []
     for k_3 ,page in enumerate(range(1, 20, 1)):
         print(page)
         url = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={page}'
         url_last = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={page - 1}'
         url_future = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={page + 1}'
-        # if url_last == url_now:
-        #     break
-        #     # items = [2, 8, 9, 1, 3, 6, 7, 4, 5, 5]
-        #     # for i in range(1, len(items)):
-        #     #     a, b = items[i - 1], items[i]
-        # else:
         useragents = open('useragents.txt').read().split('\n')
         proxies = open('proxies.txt').read().split('\n')
-        # pages_count = get_pages_count(html)
-        # html = get_html(url)
-        # html = get_html(url, useragent, proxy, params={'page': page})
-
-        # for i in range(4):
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
-        materials = []
+        # materials = []
         html = get_html(url, useragent, proxy)
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
@@ -224,10 +214,6 @@ def parse():
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
         html_2 = get_html(url_future, useragent, proxy)
-        # if html == html_1:
-        #     break
-        # else:
-    # if get_html(url[page - 1],useragent,proxy) != (url[page],useragent,proxy):
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
@@ -239,11 +225,10 @@ def parse():
         if a == b: # для проверки ставить здесь брейкпоинт на true false
             break
         else:
-            save_file(materials, FILE)
-            print(f'Получено {len(materials)} материалов')
-        # else:
-        #     print('Вышли из цикла')
-        #     break
+            continue
+    save_file(materials, FILE)
+    print(f'Получено {len(materials)} материалов')
+
 
 
 
