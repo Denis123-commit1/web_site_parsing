@@ -24,26 +24,6 @@ def get_html(url, useragent = None, proxy = None, params = None):
     r = requests.get(url, headers = useragent, proxies = proxy)
     return r.text
 
-def replace(line, old_new_num):
-    # при итерации по списку распаковываем кортежи на
-    # старое и новое значения, а так же `n` - количество замен
-    for vals in old_new_num:
-        # если кортежа имеет 3 элемента,
-        # значит присутствует количество замен
-        if len(vals) == 3:
-            # распаковываем кортеж
-            old, new, n = vals
-            # передаем аргументы методу и
-            line = line.replace(old, new, n)
-        elif len(vals) == 2:
-            # распаковываем кортеж
-            old, new = vals
-            line = line.replace(old, new)
-        else:
-            # если в кортеже НЕ 2 или 3 элемента,
-            # то поднимаем исключение
-            raise ('кортеж должен состоять из 2-х или 3-х элементов')
-    return line
 
 def get_ip(html):
     print('New proxy & New UserAgent:')
@@ -58,10 +38,9 @@ def get_ip(html):
         # item_name_1 = item_name.group(0)
         # item_name_2 = f"{replace(item_name_1, replace_val)}"
         try:
-            # item_name_1 = replace(item_name, replace_val)
             radiators.append({
                 'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
-                'name' : (re.search(item.text[item_art.end():item_price.start()].replace(")", "").replace("(", ""), item.text).group(0)),
+                'name' : (re.search(item.text[item_art.end():item_price.start()].replace(")", "").replace("(", ""), item.text).group(0)), # через 2 replace если ошибка unbalanced parenthethis
                 'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
                 'price': item_price.group(0).replace(" ",""),
                 'art': re.search('\d{8}', item.text).group(0)
