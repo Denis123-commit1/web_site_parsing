@@ -1,6 +1,7 @@
 # Леруа Мерлен
 
-
+# https://hidemy.name/ru/proxy-list/?type=h&anon=4#list (прокси отсюда брал)
+# https://spys.one/
 
 import random
 from time import sleep
@@ -31,7 +32,7 @@ def get_ip(html):
     items = soup.find_all("div", class_ = "phytpj4_plp")
     radiators = []
     for item in items:
-        item_price = re.search('\d+\s₽/шт', item.text)
+        item_price = re.search('\d+\s₽/шт|\d+\s\d+\s₽/шт', item.text)
         item_art = re.search('\d{8}', item.text)
         try:
             radiators.append({
@@ -175,7 +176,7 @@ def parse():
 
     with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
         catalog_items_1_1_1_1_1 = json.load(file)
-        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[17:]
+        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[66:]
     for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
         for k_3 ,page in enumerate(range(1, 20, 1)):
