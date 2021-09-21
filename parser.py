@@ -24,34 +24,6 @@ def get_html(url, useragent = None, proxy = None, params = None):
     r = requests.get(url, headers = useragent, proxies = proxy)
     return r.text
 
-def get_pages_count(html):
-    soup = BeautifulSoup(html, "lxml")
-    pagination = soup.find_all("a", {"class": "bex6mjh_plp", "data-qa-pagination-active":"false"})
-    if pagination:
-        pagination_1 = []
-        for item in pagination:
-        # pagination_1 = print(re.search('\d', (pagination[-1].get_text())))
-            item_obj = int(re.search("\d+", item.get('href')).group(0))
-            pagination_1.append(item_obj)
-        return pagination_1[-1] + 10
-    else:
-        return 1 + 10
-    # pagination = soup.find_all("div", class_ = "f11n7m8x_plp")
-    # pagination_2 = []
-    # if pagination:
-    #     for item in pagination:
-    #         item_obj = int(re.search('\d+', item[-1].get_text()).group(0))
-    #         pagination_2.append(item_obj)
-    # if pagination:
-    #     # pagination_1 = print(re.search((pagination[-1].get_text())))
-    #     pagination_1 = int(re.search('\d|\d+', pagination[-1].get("href")).group(0))
-    #     return pagination_2
-    # else:
-    #     return 1
-
-
-
-
 
 def get_ip(html):
     print('New proxy & New UserAgent:')
@@ -59,16 +31,15 @@ def get_ip(html):
     items = soup.find_all("div", class_ = "phytpj4_plp")
     radiators = []
     for item in items:
-        item_price = re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text)
-        item_art = re.search('\d{8}', item.text)
-        # print(item.text)
+        item_price = re.search('\d{1}\s₽/шт|\d{2}\s₽/шт|\d{3}\s₽/шт|\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт|\d{3}\s\d{3}\s₽/шт', item.text)
+        item_art = re.search('\d{7}|\d{8}|\d{9}', item.text)
         try:
             radiators.append({
                 'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
                 'name' : re.search(re.search(item.text[item_art.end():item_price.start()], item.text).group(0), item.text).group(0),
                 'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
-                'price': re.search('\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт', item.text).group(0).replace(" ",""),
-                'art': re.search('\d{8}', item.text).group(0)
+                'price': re.search('\d{1}\s₽/шт|\d{2}\s₽/шт|\d{3}\s₽/шт|\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт|\d{3}\s\d{3}\s₽/шт', item.text).group(0).replace(" ",""),
+                'art': re.search('\d{7}|\d{8}|\d{9}', item.text).group(0)
             })
         except AttributeError:
             print('Имя не найдено')
@@ -204,7 +175,8 @@ def parse():
 
     with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
         catalog_items_1_1_1_1_1 = json.load(file)
-    for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_1):
+        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[17:]
+    for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
         for k_3 ,page in enumerate(range(1, 20, 1)):
         # with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
@@ -244,8 +216,11 @@ def parse():
         save_file(materials, FILE)
         print(f'Получено {len(materials)} материалов')
 
+    # pass # После получения списка можно создать функцию переноса по значениям в pandas
 
 
+# def carry_over_table(table): # для переноса данных по значению
+#     pass
 
 
 def main():
@@ -257,60 +232,5 @@ def main():
 if __name__ == '__main__':
     main()
 
-
-
-
-# lst = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-# lst_1 = [[1,1], [2,2], [3,3]]
-# res = sum(lst, [])
-# print(res)
-# for i in lst:
-#     for i_1 in lst_1:
-#         print()
-# from itertools import groupby
-# lst = [[1,2,3],[1,4,5],[2,6,7]]
-# new_lst = list(set(sum(lst, [])))
-# # new_x = [el for el, _ in groupby(lst)]
-# print(new_lst)
-
-
-# st = list(set(['1', '2', '3', '4', '5']))
-# print(st[4])
-
-
-# lst = [1, 2]
-# lst_1 = [3,4]
-# lst_2 = lst + lst_1
-# print(lst_2)
-
-# dic = {'s' : 1}
-# print(dic.keys())
-
-# dict_list = [{'a': 1, 'b': 2}, {'a': 3}]
-# result = {}
-# for d in dict_list:
-#   result.update(d)
-#
-# print(result)
-
-# x = [1,2,3,4,5,1,2,3]
-# def unique(obj: iter):
-#     args = []
-#     for a in obj:
-#         if a not in args:
-#             args.append(a)
-#             yield a
-#
-# r = unique(x)
-# print(r)
-# print('original sort unique:', [*r])
-#
-# lst = [
-#     'a',
-#     'b'
-# ]
-# lst_1 = []
-# for i in lst:
-#     obj = i + 'a'
-#     lst_1.append(obj)
-# print(lst_1)
+# lst = ['a', 'b', 'c']
+# lst[1:]
