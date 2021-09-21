@@ -193,11 +193,11 @@ def parse():
     # with open(f"catalog_items_1_1.json", encoding="utf8") as file:
     #     catalog_items_1_1_1_1 = json.load(file)
     # for k, url in enumerate(catalog_items_1_1_1_1):
-    for k_3 ,page in enumerate(range(0, 20, 1)):
+    for k_3 ,page in enumerate(range(1, 20, 1)):
         print(page)
         url = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={page}'
-        url_last = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={k_3 - 1}'
-        url_future = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={k_3 + 1}'
+        url_last = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={page - 1}'
+        url_future = f'https://leroymerlin.ru/catalogue/radiatory-alyuminievye/?page={page + 1}'
         # if url_last == url_now:
         #     break
         #     # items = [2, 8, 9, 1, 3, 6, 7, 4, 5, 5]
@@ -236,7 +236,7 @@ def parse():
         sleep(uniform(3, 12))
         a = [get_ip(html_2)]
         b = [get_ip(html_1)]
-        if a == b:
+        if a == b: # для проверки ставить здесь брейкпоинт на true false
             break
         else:
             save_file(materials, FILE)
