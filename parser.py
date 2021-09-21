@@ -24,6 +24,26 @@ def get_html(url, useragent = None, proxy = None, params = None):
     r = requests.get(url, headers = useragent, proxies = proxy)
     return r.text
 
+def replace(line, old_new_num):
+    # при итерации по списку распаковываем кортежи на
+    # старое и новое значения, а так же `n` - количество замен
+    for vals in old_new_num:
+        # если кортежа имеет 3 элемента,
+        # значит присутствует количество замен
+        if len(vals) == 3:
+            # распаковываем кортеж
+            old, new, n = vals
+            # передаем аргументы методу и
+            line = line.replace(old, new, n)
+        elif len(vals) == 2:
+            # распаковываем кортеж
+            old, new = vals
+            line = line.replace(old, new)
+        else:
+            # если в кортеже НЕ 2 или 3 элемента,
+            # то поднимаем исключение
+            raise ('кортеж должен состоять из 2-х или 3-х элементов')
+    return line
 
 def get_ip(html):
     print('New proxy & New UserAgent:')
@@ -31,18 +51,23 @@ def get_ip(html):
     items = soup.find_all("div", class_ = "phytpj4_plp")
     radiators = []
     for item in items:
-        item_price = re.search('\d{1}\s₽/шт|\d{2}\s₽/шт|\d{3}\s₽/шт|\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт|\d{3}\s\d{3}\s₽/шт', item.text)
-        item_art = re.search('\d{7}|\d{8}|\d{9}', item.text)
+        item_price = re.search('\d+\s₽/шт', item.text)
+        item_art = re.search('\d{8}', item.text)
+        replace_val = [('(', '\('), (')', '\)')]
+        # item_name = re.search(item.text[item_art.end():item_price.start()], item.text)
+        # item_name_1 = item_name.group(0)
+        # item_name_2 = f"{replace(item_name_1, replace_val)}"
         try:
+            # item_name_1 = replace(item_name, replace_val)
             radiators.append({
                 'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
-                'name' : re.search(re.search(item.text[item_art.end():item_price.start()], item.text).group(0), item.text).group(0),
+                'name' : (re.search(item.text[item_art.end():item_price.start()].replace(")", "").replace("(", ""), item.text).group(0)),
                 'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
-                'price': re.search('\d{1}\s₽/шт|\d{2}\s₽/шт|\d{3}\s₽/шт|\d{1}\s\d{3}\s₽/шт|\d{2}\s\d{3}\s₽/шт|\d{3}\s\d{3}\s₽/шт', item.text).group(0).replace(" ",""),
-                'art': re.search('\d{7}|\d{8}|\d{9}', item.text).group(0)
+                'price': item_price.group(0).replace(" ",""),
+                'art': re.search('\d{8}', item.text).group(0)
             })
         except AttributeError:
-            print('Имя не найдено')
+            print('\Имя не найдено')
     return radiators
 
 
@@ -234,3 +259,6 @@ if __name__ == '__main__':
 
 # lst = ['a', 'b', 'c']
 # lst[1:]
+
+# lst = '12345) ('
+# print(lst.replace(")", "").replace("(", ""))
