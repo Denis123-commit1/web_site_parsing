@@ -158,7 +158,7 @@ def associated_list(html = None):
     #     json.dump([*new_valuesList_1], file, indent=4, ensure_ascii=False)
     # print('-' * 20)
 
-
+    # добавляем к списку ссылки на перехода на страницу
     # with open("catalog_items_1_1_1_1.json", encoding="utf8") as file:
     #     catalog_items_1_1_1_1 = json.load(file)
     # catalog_items_1_1_1_1_1 = []
@@ -214,14 +214,14 @@ def parse():
         save_file(materials, FILE)
         print(f'Получено {len(materials)} материалов')
 
-    # pass # После получения списка можно создать функцию переноса по значениям в pandas
+    # pass # После получения таблички можно создать функцию переноса по значениям в pandas
 
 
+# Идеи для дальнейшей работы:
 # def carry_over_table(table): # для переноса данных по значению
 #     pass
 
 # распараллелить процессы
-#
 
 
 def main():
@@ -233,8 +233,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# lst = ['a', 'b', 'c']
-# lst[1:]
-
-# lst = '12345) ('
-# print(lst.replace(")", "").replace("(", ""))
