@@ -58,16 +58,16 @@ def save_file(items, path):
 # функция для создания списков (уже создали)
 def associated_list(html = None):
     # Создаем список с категориями
-    # print('New proxy & New UserAgent:')
-    # soup = BeautifulSoup(html, 'lxml')
-    # items = soup.find_all("div", class_ = "title")
-    # catalog_list = []
-    # for item in items:
-    #     item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
-    #     catalog_list.append(item_link)
-    # # with open(f"catalog_items.json.json", "a", encoding="utf-8") as file:
-    # #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
-    # # print('-' * 20)
+    print('New proxy & New UserAgent:')
+    soup = BeautifulSoup(html, 'lxml')
+    items = soup.find_all("div", class_ = "title")
+    catalog_list = []
+    for item in items:
+        item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
+        catalog_list.append(item_link)
+    with open(f"catalog_items.json", "a", encoding="utf-8") as file:
+        json.dump(catalog_list, file, indent=4, ensure_ascii=False)
+    print('-' * 20)
 
 
         # Создаем список с подкатегориями
@@ -173,46 +173,60 @@ def associated_list(html = None):
 
 
 def parse():
+    url = f'https://leroymerlin.ru/catalogue/'
+    useragents = open('useragents.txt').read().split('\n')
+    proxies = open('proxies.txt').read().split('\n')
+    # pages_count = get_pages_count(html)
+    # html = get_html(url)
+    # html = get_html(url, useragent, proxy, params={'page': page})
 
-    with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
-        catalog_items_1_1_1_1_1 = json.load(file)
-        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[66:]
-    for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
-        materials = []
-        for k_3 ,page in enumerate(range(1, 20, 1)):
-            print(page)
-            url = f'{url_for_inserting}{page}'
-            url_last = f'{url_for_inserting}{page -1}'
-            url_future = f'{url_for_inserting}{page + 1}'
-            useragents = open('useragents.txt').read().split('\n')
-            proxies = open('proxies.txt').read().split('\n')
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            # materials = []
-            html = get_html(url, useragent, proxy)
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            html_1 = get_html(url_last, useragent, proxy)
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            html_2 = get_html(url_future, useragent, proxy)
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            html = get_html(url, useragent, proxy)
-            materials.extend(get_ip(html))
-            sleep(uniform(3, 12))
-            a = [get_ip(html_2)]
-            b = [get_ip(html_1)]
-            if a == b: # для проверки ставить здесь брейкпоинт на true false
-                break
-            else:
-                continue
-        save_file(materials, FILE)
-        print(f'Получено {len(materials)} материалов')
+    for i in range(4):
+        sleep(uniform(3, 12))
+        proxy = {'http': 'http://' + choice(proxies)}
+        useragent = {'User-Agent': choice(useragents)}
+        radiators = []
+        # pages_count = get_pages_count(html)
+        html = get_html(url, useragent, proxy)
+        associated_list(html)
+    # with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
+    #     catalog_items_1_1_1_1_1 = json.load(file)
+    #     catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[66:]
+    # for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
+    #     materials = []
+    #     for k_3 ,page in enumerate(range(1, 20, 1)):
+    #         print(page)
+    #         url = f'{url_for_inserting}{page}'
+    #         url_last = f'{url_for_inserting}{page -1}'
+    #         url_future = f'{url_for_inserting}{page + 1}'
+    #         useragents = open('useragents.txt').read().split('\n')
+    #         proxies = open('proxies.txt').read().split('\n')
+    #         sleep(uniform(3, 12))
+    #         proxy = {'http': 'http://' + choice(proxies)}
+    #         useragent = {'User-Agent': choice(useragents)}
+    #         # materials = []
+    #         html = get_html(url, useragent, proxy)
+    #         sleep(uniform(3, 12))
+    #         proxy = {'http': 'http://' + choice(proxies)}
+    #         useragent = {'User-Agent': choice(useragents)}
+    #         html_1 = get_html(url_last, useragent, proxy)
+    #         sleep(uniform(3, 12))
+    #         proxy = {'http': 'http://' + choice(proxies)}
+    #         useragent = {'User-Agent': choice(useragents)}
+    #         html_2 = get_html(url_future, useragent, proxy)
+    #         sleep(uniform(3, 12))
+    #         proxy = {'http': 'http://' + choice(proxies)}
+    #         useragent = {'User-Agent': choice(useragents)}
+    #         html = get_html(url, useragent, proxy)
+    #         materials.extend(get_ip(html))
+    #         sleep(uniform(3, 12))
+    #         a = [get_ip(html_2)]
+    #         b = [get_ip(html_1)]
+    #         if a == b: # для проверки ставить здесь брейкпоинт на true false
+    #             break
+    #         else:
+    #             continue
+    #     save_file(materials, FILE)
+    #     print(f'Получено {len(materials)} материалов')
 
     # pass # После получения таблички можно создать функцию переноса по значениям в pandas
 
@@ -226,7 +240,6 @@ def parse():
 
 def main():
     parse()
-
 
 
 
