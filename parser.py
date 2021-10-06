@@ -93,6 +93,7 @@ def associated_list(html = None):
                 json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
                 print('#'*20)
 
+
         # with open('catalog_items_1.json') as f:
         #     data = json.loads("[" +
         #                       f.read().replace("\n}{", "\n},{") +
