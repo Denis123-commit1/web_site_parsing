@@ -71,27 +71,27 @@ def associated_list(html = None):
 
 
         # Создаем список с подкатегориями
-        with open(f"catalog_items.json", encoding="utf8") as file:
-            catalog_items = json.load(file)
-        for k, url_1 in enumerate(catalog_items):
-            useragents = open('useragents.txt').read().split('\n')
-            proxies = open('proxies.txt').read().split('\n')
-            sleep(uniform(3, 12))
-            proxy = {'http': 'http://' + choice(proxies)}
-            useragent = {'User-Agent': choice(useragents)}
-            req = get_html(url_1, useragent, proxy)
-            print('Next_parser_1')
-            soup_1 = BeautifulSoup(req, 'lxml')
-            info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-            catalog_items_1 = {}
-            for i,item_1 in enumerate(info_block):
-                item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
-                catalog_items_1[f"{k, i}"] = item_link_1
-                if k == 15:
-                    break
-            with open("catalog_items_1.json", "a", encoding="utf-8") as file_1:
-                json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
-                print('#'*20)
+        # with open(f"catalog_items.json", encoding="utf8") as file:
+        #     catalog_items = json.load(file)
+        # for k, url_1 in enumerate(catalog_items):
+        #     useragents = open('useragents.txt').read().split('\n')
+        #     proxies = open('proxies.txt').read().split('\n')
+        #     sleep(uniform(3, 12))
+        #     proxy = {'http': 'http://' + choice(proxies)}
+        #     useragent = {'User-Agent': choice(useragents)}
+        #     req = get_html(url_1, useragent, proxy)
+        #     print('Next_parser_1')
+        #     soup_1 = BeautifulSoup(req, 'lxml')
+        #     info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+        #     catalog_items_1 = {}
+        #     for i,item_1 in enumerate(info_block):
+        #         item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
+        #         catalog_items_1[f"{k, i}"] = item_link_1
+        #         if k == 15:
+        #             break
+        #     with open("catalog_items_1.json", "a", encoding="utf-8") as file_1:
+        #         json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
+        #         print('#'*20)
 
 
         # with open('catalog_items_1.json') as f:
