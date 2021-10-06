@@ -58,40 +58,40 @@ def save_file(items, path):
 # функция для создания списков (уже создали)
 def associated_list(html = None):
     # Создаем список с категориями
-    print('New proxy & New UserAgent:')
-    soup = BeautifulSoup(html, 'lxml')
-    items = soup.find_all("div", class_ = "title")
-    catalog_list = []
-    for item in items:
-        item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
-        catalog_list.append(item_link)
-    with open(f"catalog_items.json", "a", encoding="utf-8") as file:
-        json.dump(catalog_list, file, indent=4, ensure_ascii=False)
-    print('-' * 20)
+    # print('New proxy & New UserAgent:')
+    # soup = BeautifulSoup(html, 'lxml')
+    # items = soup.find_all("div", class_ = "title")
+    # catalog_list = []
+    # for item in items:
+    #     item_link = "https://leroymerlin.ru" + item.find_next('a').get('href')
+    #     catalog_list.append(item_link)
+    # with open(f"catalog_items.json", "a", encoding="utf-8") as file:
+    #     json.dump(catalog_list, file, indent=4, ensure_ascii=False)
+    # print('-' * 20)
 
 
         # Создаем список с подкатегориями
-        # with open(f"catalog_items.json", encoding="utf8") as file:
-        #     catalog_items = json.load(file)
-        # for k, url_1 in enumerate(catalog_items):
-        #     useragents = open('useragents.txt').read().split('\n')
-        #     proxies = open('proxies.txt').read().split('\n')
-        #     sleep(uniform(3, 12))
-        #     proxy = {'http': 'http://' + choice(proxies)}
-        #     useragent = {'User-Agent': choice(useragents)}
-        #     req = get_html(url_1, useragent, proxy)
-        #     print('Next_parser_1')
-        #     soup_1 = BeautifulSoup(req, 'lxml')
-        #     info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
-        #     catalog_items_1 = {}
-        #     for i,item_1 in enumerate(info_block):
-        #         item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
-        #         catalog_items_1[f"{k, i}"] = item_link_1
-        #         if k == 15:
-        #             break
-        #     with open("catalog_items_1.json", "a", encoding="utf-8") as file_1:
-        #         json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
-        #         print('#'*20)
+        with open(f"catalog_items.json", encoding="utf8") as file:
+            catalog_items = json.load(file)
+        for k, url_1 in enumerate(catalog_items):
+            useragents = open('useragents.txt').read().split('\n')
+            proxies = open('proxies.txt').read().split('\n')
+            sleep(uniform(3, 12))
+            proxy = {'http': 'http://' + choice(proxies)}
+            useragent = {'User-Agent': choice(useragents)}
+            req = get_html(url_1, useragent, proxy)
+            print('Next_parser_1')
+            soup_1 = BeautifulSoup(req, 'lxml')
+            info_block = soup_1.find_all('a', {"class":"bex6mjh_plp", "data-qa":"catalog-link"})
+            catalog_items_1 = {}
+            for i,item_1 in enumerate(info_block):
+                item_link_1 = 'https://leroymerlin.ru' + item_1.get('href')
+                catalog_items_1[f"{k, i}"] = item_link_1
+                if k == 15:
+                    break
+            with open("catalog_items_1.json", "a", encoding="utf-8") as file_1:
+                json.dump(catalog_items_1, file_1, indent=4, ensure_ascii=False)
+                print('#'*20)
 
         # with open('catalog_items_1.json') as f:
         #     data = json.loads("[" +
@@ -169,25 +169,22 @@ def associated_list(html = None):
     #     json.dump(catalog_items_1_1_1_1_1, file, indent=4, ensure_ascii=False)
     # print('-' * 20)
 
-    pass
+        pass
 
 
 def parse():
     url = f'https://leroymerlin.ru/catalogue/'
     useragents = open('useragents.txt').read().split('\n')
     proxies = open('proxies.txt').read().split('\n')
-    # pages_count = get_pages_count(html)
-    # html = get_html(url)
-    # html = get_html(url, useragent, proxy, params={'page': page})
 
     for i in range(4):
         sleep(uniform(3, 12))
         proxy = {'http': 'http://' + choice(proxies)}
         useragent = {'User-Agent': choice(useragents)}
-        radiators = []
-        # pages_count = get_pages_count(html)
         html = get_html(url, useragent, proxy)
         associated_list(html)
+
+
     # with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
     #     catalog_items_1_1_1_1_1 = json.load(file)
     #     catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[66:]
