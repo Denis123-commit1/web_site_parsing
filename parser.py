@@ -199,7 +199,7 @@ def parse():
     with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
         catalog_items_1_1_1_1_1 = json.load(file)
         # если парсер по каким то причинам прекратит парсить, будет возможность вернуться
-        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[4:]
+        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[9:]
     for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
         for k_3 ,page in enumerate(range(1, 20, 1)):
