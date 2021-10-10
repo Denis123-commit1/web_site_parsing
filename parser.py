@@ -30,15 +30,15 @@ def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
     items = soup.find_all("div", class_ = "phytpj4_plp")
-    # items_1 = soup.find_all("div", class_ = "p135dg85_plp")
     items_1 = soup.find_all("span", class_="cef202m_plp")
-    items_2 = soup.find_all("div", class_ = "i7podni_plp")
-    # category = items_1[0].find_next('a', class_ = "bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
+    items_2 = soup.find_all("div", class_ = "p135dg85_plp")
+    category = items_1[0].find_next('a', class_ = "bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
     category_1 = items_1[1].find_next('a', class_ = "bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
+    category_2 = items_1[0].find_next("h1", class_ = "t3y6ha_plp h9z5efi_plp tohqtaw_plp").get_text()
+
     radiators = []
     for item in items:
         # Взять свой title
-
         try:
             radiators.append({
                 'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
@@ -46,7 +46,9 @@ def get_ip(html):
                 'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
                 'price' : item.find_next("p", class_="t3y6ha_plp xc1n09g_plp p1q9hgmc_plp").get_text(),
                 'art': item.find_next("span", class_="t3y6ha_plp sn92g85_plp p16wqyak_plp").get_text(),
-                'catalogue': category_1
+                'catalogue': category,
+                'catalogue_1': category_1,
+                'catalogue_2': category_2
             })
         except AttributeError:
             print('\Имя не найдено')
@@ -57,9 +59,9 @@ def get_ip(html):
 def save_file(items, path):
     with open(path, 'a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
-        writer.writerow(['ссылка', 'имя', 'дата', 'Цена в руб', 'артикул', 'каталог'])
+        writer.writerow(['ссылка', 'имя', 'дата', 'Цена в руб', 'артикул', 'каталог', 'подкаталог_1','подкаталог_2'])
         for item in items:
-            writer.writerow([item['link'], item['title'], item['date'], item['price'], item['art'], item['catalogue']])
+            writer.writerow([item['link'], item['title'], item['date'], item['price'], item['art'], item['catalogue'], item['catalogue_1'],item['catalogue_2']])
 
 
 # функция для создания списков (уже создали)
