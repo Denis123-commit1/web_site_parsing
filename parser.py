@@ -30,8 +30,12 @@ def get_ip(html):
     print('New proxy & New UserAgent:')
     soup = BeautifulSoup(html, 'lxml')
     items = soup.find_all("div", class_ = "phytpj4_plp")
+    # items_1 = soup.find_all("div", class_ = "p135dg85_plp")
     items_1 = soup.find_all("div", class_ = "p135dg85_plp")
-    category = items_1[0].find_next("h1", class_ = "t3y6ha_plp h9z5efi_plp tohqtaw_plp").get_text()
+    items_2 = soup.find_all("span", class_="cef202m_plp")
+
+    # category = items_1[0].find_next("h1", class_ = "t3y6ha_plp h9z5efi_plp tohqtaw_plp").get_text()
+    category = items_2[0].find_next('a', class_ = "bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
 
     radiators = []
     for item in items:
