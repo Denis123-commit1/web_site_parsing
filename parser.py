@@ -229,13 +229,15 @@ def parse():
             # materials_1 = []
             # materials_1.append(get_ip(html))
             # for k_4 in enumerate(range(2, 50, 1)):
+            materials_2 = []
             materials_1 = []
             count = 0
             for i_1 in materials:
+                materials_2.append(i_1)
                 if i_1 not in materials_1:
                     count = count + 1
                     materials_1.append(i_1)
-            if len(materials_1) - count > len(materials_1) - count + 1: # для проверки ставить здесь брейкпоинт на true false
+            if len(materials_2) > count: # для проверки ставить здесь брейкпоинт на true false
                 break
             else:
                 continue
