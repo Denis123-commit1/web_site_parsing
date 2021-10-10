@@ -237,7 +237,7 @@ def parse():
                 if i_1 not in materials_1:
                     count = count + 1
                     materials_1.append(i_1)
-            if len(materials_2) > count: # для проверки ставить здесь брейкпоинт на true false
+            if len(materials_2) > len(materials_1): # для проверки ставить здесь брейкпоинт на true false
                 break
             else:
                 continue
