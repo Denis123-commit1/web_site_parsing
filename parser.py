@@ -32,6 +32,7 @@ def get_ip(html):
     items = soup.find_all("div", class_ = "phytpj4_plp")
     items_1 = soup.find_all("div", class_ = "p135dg85_plp")
     category = items_1[0].find_next("h1", class_ = "t3y6ha_plp h9z5efi_plp tohqtaw_plp").get_text()
+
     radiators = []
     for item in items:
         # Взять свой title
