@@ -31,7 +31,7 @@ def get_ip(html):
     soup = BeautifulSoup(html, 'lxml')
     items = soup.find_all("div", class_ = "phytpj4_plp")
     items_1 = soup.find_all("div", class_ = "p135dg85_plp")
-    category = items_1["data-qa-breadcrumb"]
+    category = items_1[0].find_next("h1", class_ = "t3y6ha_plp h9z5efi_plp tohqtaw_plp").get_text()
     radiators = []
     for item in items:
         # Взять свой title
@@ -43,7 +43,7 @@ def get_ip(html):
                 'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
                 'price' : item.find_next("p", class_="t3y6ha_plp xc1n09g_plp p1q9hgmc_plp").get_text(),
                 'art': item.find_next("span", class_="t3y6ha_plp sn92g85_plp p16wqyak_plp").get_text(),
-                'catalogue': item.find_next("a", class_ = "bex6mjh_plp l1ulcka1_plp sztb90a_plp").get("href")
+                'catalogue': category
             })
         except AttributeError:
             print('\Имя не найдено')
