@@ -31,15 +31,13 @@ def get_ip(html):
     soup = BeautifulSoup(html, 'lxml')
     items = soup.find_all("div", class_ = "phytpj4_plp")
     items_1 = soup.find_all("span", class_="cef202m_plp")
-    items_2 = soup.find_all("div", class_ = "p135dg85_plp")
-    category = items_1[0].find_next('a', class_ = "bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
-    category_1 = items_1[1].find_next('a', class_ = "bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
-    category_2 = items_1[0].find_next("h1", class_ = "t3y6ha_plp h9z5efi_plp tohqtaw_plp").get_text()
-
     radiators = []
     for item in items:
         # Взять свой title
         try:
+            category = items_1[0].find_next('a', class_="bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
+            category_1 = items_1[1].find_next('a', class_="bex6mjh_plp l1ulcka1_plp sztb90a_plp").get('href')
+            category_2 = items_1[0].find_next("h1", class_="t3y6ha_plp h9z5efi_plp tohqtaw_plp").get_text()
             radiators.append({
                 'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
                 'title' : item.find_next("span", class_="t9jup0e_plp p1h8lbu4_plp").get_text(),
@@ -208,7 +206,7 @@ def parse():
     with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
         catalog_items_1_1_1_1_1 = json.load(file)
         # если парсер по каким то причинам прекратит парсить, будет возможность вернуться
-        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[0:]
+        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[59:]
     for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
         for k_3,page in enumerate(range(1, 50, 1) ):
