@@ -32,15 +32,24 @@ def get_ip(html):
     items = soup.find_all("div", class_ = "phytpj4_plp")
     radiators = []
     for item in items:
-        item_price = re.search('\d+\s₽/шт|\d+\s\d+\s₽/шт', item.text)
-        item_art = re.search('\d{8}', item.text)
+        # Взять свой title
+        # title = soup.find("span", class_="cef202m_plp").get_text()
+        # price = soup.find('p', class_="t3y6ha_plp xc1n09g_plp p1q9hgmc_plp").get_text()
+
+        # item_price = re.search('\d+\s₽/шт|\d+\s\d+\s₽/шт', item.text)
+        # item_art = re.search('\d{8}', item.text)
         try:
             radiators.append({
+                # "title": title,
+                # "price": price,
                 'link' : 'https://leroymerlin.ru' + item.find_next('a').get('href'),
-                'name' : (re.search(item.text[item_art.end():item_price.start()].replace(")", "").replace("(", ""), item.text).group(0)), # через 2 replace если ошибка unbalanced parenthethis
+                'title' : item.find_next("span", class_="t9jup0e_plp p1h8lbu4_plp").get_text(),
+                # 'name' : (re.search(item.text[item_art.end():item_price.start()].replace(")", "").replace("(", ""), item.text).group(0)), # через 2 replace если ошибка unbalanced parenthethis
                 'date' : datetime.today().strftime('%Y-%m-%d-%H-%M'),
-                'price': item_price.group(0).replace(" ",""),
-                'art': re.search('\d{8}', item.text).group(0)
+                'price' : item.find_next("p", class_="t3y6ha_plp xc1n09g_plp p1q9hgmc_plp").get_text(),
+                # 'price': item_price.group(0).replace(" ",""),
+                # 'art': re.search('\d{8}', item.text).group(0)
+                'art': item.find_next("span", class_="t3y6ha_plp sn92g85_plp p16wqyak_plp").get_text()
             })
         except AttributeError:
             print('\Имя не найдено')
@@ -51,9 +60,12 @@ def get_ip(html):
 def save_file(items, path):
     with open(path, 'a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file, delimiter=';')
-        writer.writerow(['ссылка', 'имя', 'дата', 'Цена в руб', 'артикул'])
+        # writer.writerow(['ссылка', 'имя', 'дата', 'Цена в руб', 'артикул'])
+        writer.writerow(['ссылка', 'Цена в руб'])
         for item in items:
-            writer.writerow([item['link'], item['name'], item['date'], item['price'], item['art']])
+            # writer.writerow([item['link'], item['name'], item['date'], item['price'], item['art']])
+            writer.writerow([item['link'], item['price']])
+
 
 # функция для создания списков (уже создали)
 def associated_list(html = None):
@@ -199,10 +211,11 @@ def parse():
     with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
         catalog_items_1_1_1_1_1 = json.load(file)
         # если парсер по каким то причинам прекратит парсить, будет возможность вернуться
-        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[9:]
+        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[3:]
     for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
-        for k_3 ,page in enumerate(range(1, 50, 1) ):
+        # materials_1 = []
+        for k_3,page in enumerate(range(1, 50, 1) ):
             print(page)
             url = f'{url_for_inserting}{page}'
             useragents = open('useragents.txt').read().split('\n')
@@ -211,8 +224,18 @@ def parse():
             proxy = {'http': 'http://' + choice(proxies)}
             useragent = {'User-Agent': choice(useragents)}
             html = get_html(url, useragent, proxy)
+            # html_1 = get_html(url, useragent, proxy)[k_3+1]
             materials.extend(get_ip(html))
-            if html[page] == html[page+1]: # для проверки ставить здесь брейкпоинт на true false
+            # materials_1 = []
+            # materials_1.append(get_ip(html))
+            # for k_4 in enumerate(range(2, 50, 1)):
+            materials_1 = []
+            count = 0
+            for i_1 in materials:
+                if i_1 not in materials_1:
+                    count = count + 1
+                    materials_1.append(i_1)
+            if len(materials_1) - count > len(materials_1) - count + 1: # для проверки ставить здесь брейкпоинт на true false
                 break
             else:
                 continue
