@@ -225,6 +225,8 @@ def parse():
             useragent = {'User-Agent': choice(useragents)}
             html = get_html(url, useragent, proxy)
             substring = "access blocked"
+            a = quit() and print(f"{url}") if html.lower().find(substring) == 1 else print("ok")
+
             # if html.lower().index(substring):
             #     break
             # else:
@@ -239,10 +241,11 @@ def parse():
                 if i_1 not in materials_1:
                     count = count + 1
                     materials_1.append(i_1)
-            if len(materials_2) > len(materials_1) or html.lower().find(substring) == -1: # для проверки ставить здесь брейкпоинт на true false
+            if len(materials_2) > len(materials_1): # для проверки ставить здесь брейкпоинт на true false
                 break
             else:
                 continue
+
         save_file(materials, FILE)
         print(f'Получено {len(materials)} материалов')
 
