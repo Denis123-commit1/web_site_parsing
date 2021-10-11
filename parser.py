@@ -51,7 +51,7 @@ def get_ip(html):
                 'catalogue_1': category_1,
                 'catalogue_2': category_2
             })
-        except AttributeError:
+        except (AttributeError, ConnectionError):
             category = None
             category_1 = None
             category_2 = None
@@ -212,18 +212,24 @@ def parse():
     with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
         catalog_items_1_1_1_1_1 = json.load(file)
         # если парсер по каким то причинам прекратит парсить, будет возможность вернуться
-        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[566:]
+        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[892:]
     for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
-        for k_3,page in enumerate(range(1, 50, 1) ):
+        for k_3,page in enumerate(range(1, 600, 1) ):
             print(page)
             url = f'{url_for_inserting}{page}'
             useragents = open('useragents.txt').read().split('\n')
             proxies = open('proxies.txt').read().split('\n')
-            sleep(uniform(1, 3))
+            sleep(uniform(1, 2))
             proxy = {'http': 'http://' + choice(proxies)}
             useragent = {'User-Agent': choice(useragents)}
             html = get_html(url, useragent, proxy)
+            substring = "access blocked"
+            # if html.lower().index(substring):
+            #     break
+            # else:
+            #     continue
+
             materials.extend(get_ip(html))
             materials_2 = []
             materials_1 = []
@@ -233,7 +239,7 @@ def parse():
                 if i_1 not in materials_1:
                     count = count + 1
                     materials_1.append(i_1)
-            if len(materials_2) > len(materials_1): # для проверки ставить здесь брейкпоинт на true false
+            if len(materials_2) > len(materials_1) or html.lower().find(substring) == -1: # для проверки ставить здесь брейкпоинт на true false
                 break
             else:
                 continue
