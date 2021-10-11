@@ -223,6 +223,7 @@ def parse():
             sleep(uniform(1, 2))
             proxy = {'http': 'http://' + choice(proxies)}
             useragent = {'User-Agent': choice(useragents)}
+
             html = get_html(url, useragent, proxy)
             substring = "access blocked"
             a = quit() and print(f"{url}") if html.lower().find(substring) == 1 else print("ok")
