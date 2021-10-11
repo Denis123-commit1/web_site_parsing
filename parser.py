@@ -212,7 +212,7 @@ def parse():
     with open(f"catalog_items_1_1_1_1_1.json", encoding="utf8") as file:
         catalog_items_1_1_1_1_1 = json.load(file)
         # если парсер по каким то причинам прекратит парсить, будет возможность вернуться
-        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[892:]
+        catalog_items_1_1_1_1_2 = catalog_items_1_1_1_1_1[908:]
     for k, url_for_inserting in enumerate(catalog_items_1_1_1_1_2):
         materials = []
         for k_3,page in enumerate(range(1, 600, 1) ):
@@ -223,29 +223,48 @@ def parse():
             sleep(uniform(1, 2))
             proxy = {'http': 'http://' + choice(proxies)}
             useragent = {'User-Agent': choice(useragents)}
-
-            html = get_html(url, useragent, proxy)
-            substring = "access blocked"
-            a = quit() and print(f"{url}") if html.lower().find(substring) == 1 else print("ok")
+            try:
+                html = get_html(url, useragent, proxy)
+                substring = "access blocked"
+                print(f"{url}") and quit() if substring in f"{html.lower()}" else print("ok")
+                # quit() and print(f"{url}") if f"{html}".find(substring) == 1 else print("ok")
+                materials.extend(get_ip(html))
+                materials_2 = []
+                materials_1 = []
+                count = 0
+                for i_1 in materials:
+                    materials_2.append(i_1)
+                    if i_1 not in materials_1:
+                        count = count + 1
+                        materials_1.append(i_1)
+                if len(materials_2) > len(materials_1):  # для проверки ставить здесь брейкпоинт на true false
+                    break
+                else:
+                    continue
+            except ConnectionError:
+                print("error")
+                continue
+            # substring = "access blocked"
+            # a = quit() and print(f"{url}") if html.lower().find(substring) == 1 else print("ok")
 
             # if html.lower().index(substring):
             #     break
             # else:
             #     continue
 
-            materials.extend(get_ip(html))
-            materials_2 = []
-            materials_1 = []
-            count = 0
-            for i_1 in materials:
-                materials_2.append(i_1)
-                if i_1 not in materials_1:
-                    count = count + 1
-                    materials_1.append(i_1)
-            if len(materials_2) > len(materials_1): # для проверки ставить здесь брейкпоинт на true false
-                break
-            else:
-                continue
+            # materials.extend(get_ip(html))
+            # materials_2 = []
+            # materials_1 = []
+            # count = 0
+            # for i_1 in materials:
+            #     materials_2.append(i_1)
+            #     if i_1 not in materials_1:
+            #         count = count + 1
+            #         materials_1.append(i_1)
+            # if len(materials_2) > len(materials_1): # для проверки ставить здесь брейкпоинт на true false
+            #     break
+            # else:
+            #     continue
 
         save_file(materials, FILE)
         print(f'Получено {len(materials)} материалов')
