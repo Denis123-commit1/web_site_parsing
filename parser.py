@@ -245,6 +245,7 @@ def parse():
                 print("error")
                 continue
 
+
         save_file(materials, FILE)
         print(f'Получено {len(materials)} материалов')
 
